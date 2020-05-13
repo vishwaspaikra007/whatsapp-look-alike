@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './header.css'
-export default function header() {
+
+export default function Header(props) {
     return (
         <div>
             <div className="header">
@@ -11,9 +12,9 @@ export default function header() {
                 </div>
                 <div className="options">
                     <div><i className="icon-camera"></i></div>
-                    <div>CHATS</div>
-                    <div>STATUS</div>
-                    <div>CALLS</div>
+                    <div onClick={() => props.scrollTo(0)}>CHATS</div>
+                    <div onClick={() => props.scrollTo(1)}>STATUS</div>
+                    <div onClick={() => props.scrollTo(2)}>CALLS</div>
                 </div>
             </div>
         </div>
