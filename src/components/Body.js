@@ -16,7 +16,7 @@ export default function Body(props) {
 
     const bodyRef = useRef()
 
-    useEffect(() => props.shareRef(bodyRef), [])
+    useEffect(() => props.shareRef(bodyRef), [props])
 
     return (
         <div style={bodyStyle} ref={bodyRef}>

@@ -1,14 +1,16 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import './header.css'
 
 export default function Header(props) {
-
+    const [allowClick, setAllowClick] = useState(false)
     let spanStyle = {
         marginLeft: props.marginLeft + "%"
     }
     const openMenu = () => {
-        props.openMenu(true)
+        if(allowClick)
+            props.openMenu(true)
     }
+    useEffect(()=> setAllowClick(true),[])
     return (
         <div>
             <div className="header">

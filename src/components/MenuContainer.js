@@ -1,24 +1,34 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './menu.css'
 export default function MenuContainer(props) {
-    const [allowClick, setAllowClick] = useState(true)
-    const menuRef = useRef()
+    const [allowClick, setAllowClick] = useState(false)
+    const [menuClass, setMenuClass] = useState("")
     const closeMenu = ()=> {
         if(allowClick)
         {
-            menuRef.current.className="chatsMenu chatsMenuFull chatsMenuFullHide" 
+            setMenuClass("menuCardFull menuCardFullHide")
             setTimeout(() => {
-                menuRef.current.className="chatsMenu" 
+                setMenuClass("") 
                 setAllowClick(true)
                 props.openMenu(false)
-            }, 300);
+            }, 295);
         }
         setAllowClick(false)
     }
-    useEffect(() => props.shareRef(menuRef), [])
+    
+    useEffect(() => {
+        console.log(menuClass)
+        setMenuClass(props.menuClass)
+    },[props.menuClass])
+
+    useEffect(()=> {
+        setAllowClick(true)
+        setMenuClass("") 
+    },[])
+
     return (
         <div className="menuContainer" onClick={() => closeMenu()}>
-            <div className="chatsMenu" ref={menuRef}>
+            <div className={"menuCard " + menuClass}>
                 <div className="MenuList">
                     <span >New group</span>
                     <span>New broadcast</span>
