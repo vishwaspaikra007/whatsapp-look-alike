@@ -1,12 +1,19 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import './menu.css'
 export default function MenuContainer(props) {
+    const [allowClick, setAllowClick] = useState(true)
     const menuRef = useRef()
     const closeMenu = ()=> {
-        menuRef.current.className="chatsMenu chatsMenuFull chatsMenuFullHide" 
-        setTimeout(() => {
-            props.openMenu(false)
-        }, 300);
+        if(allowClick)
+        {
+            menuRef.current.className="chatsMenu chatsMenuFull chatsMenuFullHide" 
+            setTimeout(() => {
+                menuRef.current.className="chatsMenu" 
+                setAllowClick(true)
+                props.openMenu(false)
+            }, 300);
+        }
+        setAllowClick(false)
     }
     useEffect(() => props.shareRef(menuRef), [])
     return (
