@@ -2,12 +2,14 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import Header from './components/header'
 import Body from './components/Body';
+import MenuContainer from './components/MenuContainer';
 function App() {
 
   const [bodyRef, setBodyRef] = useState(null)
+  const [menuRef, setMenuRef] = useState(null)
   const [scrollX, setScrollX] = useState(0)
   const [marginLeft, setMarginLeft] = useState(10)
-  const [spanScrollX, setSpanScrollX] = useState(0)
+  const [showMenu, setMenu] = useState(false)
 
   const scrollTo = (i)=> {
     bodyRef.current.style.scrollSnapType = "none"
@@ -20,7 +22,7 @@ function App() {
     let start = bodyRef.current.scrollLeft
     const end = i*bodyRef.current.clientWidth
     const distance = end - start
-    const pix = distance > 0 ? 15: -15
+    const pix = distance/10
     let check = 0;
 
     if(bodyRef)
@@ -57,10 +59,18 @@ function App() {
     }
   },[bodyRef])
 
+  useEffect(()=> {
+    if(menuRef && showMenu)
+      menuRef.current.className = "chatsMenu chatsMenuFull"
+  },[menuRef])
+
   return (
     <div className="App">
-      <Header scrollTo={scrollTo} marginLeft={marginLeft}/>
+      <Header scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)}/>
       <Body shareRef={ref => setBodyRef(ref)}/>
+      {
+        showMenu ? <MenuContainer openMenu={val => setMenu(val)} shareRef={ref => setMenuRef(ref)}/>: null
+      }
     </div>
   );
 }

@@ -32,14 +32,15 @@
     z-index: -1;
     content: "";
     position: absolute;
-    background: #ffffff45;
+    background-color: #ffffff73;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
     opacity: 0;
+    margin-left: 0%;
     border-radius: 0;
-    transition: 100ms;
+    transition: all 100ms ease-in-out, opacity 700ms ease-in-out, background-color 400ms ease-in-out;
     transition-timing-function: ease-out;
 }
 .options > div {
@@ -49,9 +50,10 @@
 }
 .options > div:active::after {
     opacity: 1;
+    background-color: rgba(255, 255, 255, 0.103);
     transition: 0ms;
-    left: 15%;
-    border-radius: 5px;
+    margin-left: 15%;
+    border-radius:  40%;
     width: 70%;
 }
 .brandName {

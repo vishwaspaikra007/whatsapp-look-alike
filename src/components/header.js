@@ -6,14 +6,16 @@ export default function Header(props) {
     let spanStyle = {
         marginLeft: props.marginLeft + "%"
     }
-
+    const openMenu = () => {
+        props.openMenu(true)
+    }
     return (
         <div>
             <div className="header">
                 <div className="menu">
                     <div className="brandName">WhatsApp</div>
                     <div><i className="icon-search"></i></div>
-                    <div><i className="vertical-menu"></i></div>
+                    <div onClick={openMenu}><i className="vertical-menu"></i></div>
                 </div>
                 <div className="options">
                     <div><i className="icon-camera"></i></div>
