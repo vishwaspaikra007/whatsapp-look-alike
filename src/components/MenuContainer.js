@@ -17,8 +17,10 @@ export default function MenuContainer(props) {
     }
     
     useEffect(() => {
-        console.log(menuClass)
-        setMenuClass(props.menuClass)
+        setMenuClass("")
+        setTimeout(() => {
+            setMenuClass(props.menuClass)
+        }, 10);
     },[props.menuClass])
 
     useEffect(()=> {

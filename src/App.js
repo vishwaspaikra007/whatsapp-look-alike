@@ -20,12 +20,13 @@ function App() {
     let start = bodyRef.scrollLeft
     const end = i*bodyRef.clientWidth
     const distance = end - start
-    const pix = distance/10
+    const pix = distance/5
     let check = 0;
 
     if(bodyRef)
     {
       scrollAnime = setInterval(() => {
+        console.log(check , " ", pix, Date.now())
         start+= pix 
         setScrollX(start)
        check += pix

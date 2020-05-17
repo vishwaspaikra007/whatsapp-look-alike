@@ -1,0 +1,37 @@
+.ChatContainer {
+    height: 80px;
+    display: grid;
+    grid-template-columns: 80px auto;
+}
+.ChatContainer > div {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+}
+.ChatContainer > div:nth-child(1) {
+    display: block;
+}
+.ChatContainer > div > div{
+    display: grid;
+    text-align: left;
+    overflow: hidden;
+    margin-right: 10px;
+}
+.ChatContainer > div > div:nth-child(1){
+    grid-template-columns: auto 80px;
+}
+.ChatContainer > div > div:nth-child(2){
+    grid-template-columns: auto 30px;
+    border-bottom: 0.5px solid silver;
+}
+.date{
+    font-size: 12px;
+    color: gray;
+    padding-top: 23.5px;
+    text-align: end;
+}
+.name {
+    padding-top: 20px;
+}
+.lastMessage {
+    color: gray;
+}

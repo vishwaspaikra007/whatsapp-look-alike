@@ -1,13 +1,16 @@
-import React, {useState} from 'react'
-
+import React from 'react'
+import {ReactComponent as PersonLogo} from '../assets/PersonLogo.svg'
+import './ProfilePic.css'
 export default function ProfilePic() {
-    const bgStyle = {
-        background: '#ece5dd'
-    }
-    const {img, setImg} = useState('../assets/person.svg')
+    const logo = "svg"
+
     return (
-        <div style={bgStyle}>
-            <img src={imj} />
+        <div className={"bgStyle"}>
+            {
+                logo === "svg" ?
+                <PersonLogo /> :
+                <img className="defaultImg" src={require('../assets/person.svg')} alt="profile pic"/>
+            }
         </div>
     )
 }

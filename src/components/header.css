@@ -15,6 +15,7 @@
     text-overflow: ellipsis;
     font-weight: 500;
     position: relative;
+    box-shadow: 0 0 14px -6px black;
 }
 .menu {
     display: grid;
