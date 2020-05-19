@@ -1,19 +1,27 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import './header.css'
 
 export default function Header(props) {
     const [allowClick, setAllowClick] = useState(false)
+    const headerRef = useRef()
     let spanStyle = {
-        marginLeft: props.marginLeft + "%"
+        marginLeft: props.marginLeft + "%",
+    }
+    let headerStyle = {
+        marginTop: props.marginTop + "px",
     }
     const openMenu = () => {
         if(allowClick)
             props.openMenu(true)
     }
-    useEffect(()=> setAllowClick(true),[])
+
+    useEffect(()=> {
+        setAllowClick(true)
+        props.setHeaderRefInApp(headerRef)
+    },[])
     return (
         <div>
-            <div className="header">
+            <div className="header" style={headerStyle} ref={headerRef}>
                 <div className="menu">
                     <div className="brandName">WhatsApp</div>
                     <div><i className="icon-search"></i></div>

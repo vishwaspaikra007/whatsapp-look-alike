@@ -14,8 +14,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: 500;
-    position: relative;
     box-shadow: 0 0 14px -6px black;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 .menu {
     display: grid;

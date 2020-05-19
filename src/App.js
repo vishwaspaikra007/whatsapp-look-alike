@@ -10,6 +10,9 @@ function App() {
   const [marginLeft, setMarginLeft] = useState(10)
   const [showMenu, setMenu] = useState(false)
   const [menuClass, setMenuClass] = useState('menuCard')
+  const [chatsRefForBody, setchatsRefForBody] = useState()
+  const [marginTop, setMarginTop] = useState(0)
+  const [headerRef, setHeaderRef] = useState()
   const scrollTo = (i)=> {
     bodyRef.style.scrollSnapType = "none"
     let scrollAnime;
@@ -26,7 +29,6 @@ function App() {
     if(bodyRef)
     {
       scrollAnime = setInterval(() => {
-        console.log(check , " ", pix, Date.now())
         start+= pix 
         setScrollX(start)
        check += pix
@@ -65,10 +67,51 @@ function App() {
       setMenuClass(" ")
   },[showMenu])
 
+  useEffect(()=> {
+    if(chatsRefForBody && headerRef)
+    {
+      //called only once
+      let lastScrolledTopValue
+      let scrolled = 0
+      let scrollTimer
+      chatsRefForBody.addEventListener('scroll', e => {
+        if(scrollTimer)
+          clearTimeout(scrollTimer)
+        chatsRefForBody.style.transition = "height 0s"
+        bodyRef.style.transition = "margin-top 0ms, height 0ms"
+        headerRef.style.transition =  "margin-top 0ms"
+        if(!lastScrolledTopValue)
+          lastScrolledTopValue = chatsRefForBody.scrollTop
+
+        scrolled +=  lastScrolledTopValue - chatsRefForBody.scrollTop
+        if(scrolled < -60)
+          scrolled = - 60
+        else if(scrolled > 0)
+          scrolled = 0
+        setMarginTop(scrolled)
+        scrollTimer = setTimeout(() => {
+          chatsRefForBody.style.transition = "height 400ms"
+          bodyRef.style.transition = "margin-top 400ms, height 400ms"
+          headerRef.style.transition =  "margin-top 400ms"
+          if(scrolled < -30 && chatsRefForBody.scrollTop > 60)
+            scrolled = -60
+          else
+            scrolled = 0
+          setMarginTop(scrolled)
+        }, 400);
+        lastScrolledTopValue = chatsRefForBody.scrollTop
+      })
+    }
+    return ()=> {
+      if(chatsRefForBody)
+        chatsRefForBody.removeEventListener('scroll')
+    }
+  },[chatsRefForBody, headerRef])
+
   return (
     <div className="App">
-      <Header scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)}/>
-      <Body shareRef={ref => setBodyRef(ref.current)}/>
+      <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} marginTop={marginTop}/>
+      <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop}/>
       {
         showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass}/>: null
       }
