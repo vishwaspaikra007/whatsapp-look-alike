@@ -20,7 +20,7 @@ export default function Body(props) {
 
     return (
         <div className={"body"} ref={bodyRef}>
-            <Chats setchatsRef={chatsRef => setchatsRef(chatsRef)} scrolled={props.scrolled}/>
+            <Chats setchatsRef={chatsRef => setchatsRef(chatsRef)} scrolled={props.scrolled} names={props.names}/>
             <Status />
             <Calls />
         </div>

@@ -23,7 +23,7 @@
     grid-template-columns: auto 30px;
     border-bottom: 0.5px solid silver;
 }
-.ChatContainer > div > div:nth-last-child(1){
+.ChatContainer:nth-last-child(2) > div > div{
     border-bottom: none;
 }
 .date{

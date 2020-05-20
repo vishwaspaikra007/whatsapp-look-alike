@@ -23,15 +23,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  width: 10px;
-  height: 10px;
-  background: #dfe5e7; 
-}
-::-webkit-scrollbar-thumb {
-  background: #acacac;
+
+@media (any-hover: hover) {
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #dfe5e7; 
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #8f8f8f;
+  }
 }
