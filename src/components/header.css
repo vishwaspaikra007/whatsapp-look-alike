@@ -77,14 +77,14 @@ i {
     display: block;
 }
 .icon-search {
-    background-image: url('../assets/icons8-search.svg');
+    background-image: url('../assets/search.svg');
 
 }
 .vertical-menu {
     background-image: url('../assets/vertical-menu.svg');
 }
 .icon-camera {
-    background-image: url('../assets/icons8-unsplash.svg');
+    background-image: url('../assets/camera.svg');
 }
 .indicator {
     content: "";

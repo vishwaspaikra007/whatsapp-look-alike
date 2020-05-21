@@ -3,6 +3,7 @@ import './App.css';
 import Header from './components/header'
 import Body from './components/Body';
 import MenuContainer from './components/MenuContainer';
+import Room from './components/Room';
 function App() {
 
   const [bodyRef, setBodyRef] = useState(null)
@@ -130,6 +131,7 @@ function App() {
       {
         showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass}/>: null
       }
+      <Room />
     </div>
   );
 }

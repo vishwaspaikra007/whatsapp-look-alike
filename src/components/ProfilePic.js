@@ -1,6 +1,6 @@
 import React from 'react'
-import {ReactComponent as PersonLogo} from '../assets/PersonLogo.svg'
 import './ProfilePic.css'
+import {ReactComponent as Person} from '../assets/person.svg'
 export default function ProfilePic() {
     const logo = "svg"
 
@@ -8,7 +8,7 @@ export default function ProfilePic() {
         <div className={"bgStyle"}>
             {
                 logo === "svg" ?
-                <PersonLogo /> :
+                <Person /> :
                 <img className="defaultImg" src={require('../assets/person.svg')} alt="profile pic"/>
             }
         </div>

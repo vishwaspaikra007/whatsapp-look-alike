@@ -25,7 +25,7 @@ export default function Header(props) {
                 <div className="menu">
                     <div className="brandName">WhatsApp</div>
                     <div><i className="icon-search"></i></div>
-                    <div onClick={openMenu}><i className="vertical-menu"></i></div>
+                    <div onClick={openMenu}><i className="vertical-menu-room"></i></div>
                 </div>
                 <div className="options">
                     <div><i className="icon-camera"></i></div>
