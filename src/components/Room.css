@@ -1,14 +1,26 @@
 .room {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
     margin-left: 0;
-    background-color: #ffffff99;
+    background-color: #e5ddd5;
+    display: grid;
+    grid-template-rows: 55px auto 60px;
+}
+.background-image {
+    background-image: url(/whatsapp-look-alike/static/media/bg-chat-tile.9e8a2898.png);
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.06;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
 }
 .roomHeader {
-    width: 100%;
+    width: 100vw;
     height: 55px;
     background-color: #075e54;
 }
@@ -55,3 +67,53 @@
 .roomHeader > div > i {
     height: 22.5px;
 }
+.create {
+    display: grid;
+    grid-template-columns: calc(100vw - 55px) 55px;
+    width: 100vw;
+    position: fixed;
+    bottom: 7px;
+}
+.create > .chatInput {
+    display: grid;
+    grid-template-columns: 40px calc(100vw - 195px) 40px 40px;
+    height: 45px;
+    margin: auto;
+    width: calc(100% - 5px);
+    border-radius: 50px;
+    padding: 0 6px;
+    background-color: white;
+}
+.chatInput > input {
+    border: none;
+    outline: none;
+    font-size: 17px;
+}
+.emoji > i {
+    background-image: url("../assets/emoji.svg");
+}
+.attachment {
+    transform: rotateX(180deg) rotateZ(-180deg);
+}
+.attachment > i {
+    background-image: url("../assets/attachment.svg");
+}
+.camera > i {
+    background-image: url("../assets/camera copy.svg");
+}
+.microphone {
+    border-radius: 50%;
+    background: #328b7d;
+    width: 45px;
+    height: 45px;
+    margin: auto;
+    padding-top: 2px;
+}
+.microphone > i {
+    background-image: url("../assets/microphone.svg");
+    height: 20px;
+
+}
+/* .chatInput > div > i{
+    height: 20px;
+} */
