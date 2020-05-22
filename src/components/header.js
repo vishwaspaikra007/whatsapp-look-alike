@@ -20,21 +20,19 @@ export default function Header(props) {
         props.setHeaderRefInApp(headerRef)
     },[])
     return (
-        <div>
-            <div className="header" style={headerStyle} ref={headerRef}>
-                <div className="menu">
-                    <div className="brandName">WhatsApp</div>
-                    <div><i className="icon-search"></i></div>
-                    <div onClick={openMenu}><i className="vertical-menu"></i></div>
-                </div>
-                <div className="options">
-                    <div><i className="icon-camera"></i></div>
-                    <div onClick={() => props.scrollTo(0)}>CHATS</div>
-                    <div onClick={() => props.scrollTo(1)}>STATUS</div>
-                    <div onClick={() => props.scrollTo(2)}>CALLS</div>
-                </div>
-                <span className="indicator" style={spanStyle}></span>
+        <div className="header" style={headerStyle} ref={headerRef}>
+            <div className="menu">
+                <div className="brandName">WhatsApp</div>
+                <div><i className="icon-search"></i></div>
+                <div onClick={openMenu}><i className="vertical-menu"></i></div>
             </div>
+            <div className="options">
+                <div><i className="icon-camera"></i></div>
+                <div onClick={() => props.scrollTo(0)}>CHATS</div>
+                <div onClick={() => props.scrollTo(1)}>STATUS</div>
+                <div onClick={() => props.scrollTo(2)}>CALLS</div>
+            </div>
+            <span className="indicator" style={spanStyle}></span>
         </div>
     )
 }

@@ -19,12 +19,11 @@ export default function Chats(props) {
        props.setchatsRef(chatsRef)
     },[props.names])
 
-    //to send scroll data
     return (
         <div ref={chatsRef} className={"chatsContainer"}>
             {
                 props.names.map((i, index) => {
-                    return (<ChatContainer key={index} id={index} name={i} date={datesArr[index]}/>)
+                    return (<ChatContainer key={index} id={index} name={i} date={datesArr[index]} setroomDetails={roomDetails => props.setroomDetails(roomDetails)}/>)
                 })
             }
             <div>Tap and hold on chat for more option</div>

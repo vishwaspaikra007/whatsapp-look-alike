@@ -6,5 +6,5 @@
     display: grid;
     grid-template-columns: 100% 100% 100%;
     margin-top: 50px;
-    transition: margin-top 400ms, height 400ms;
+    transition: margin-top 400ms, height 400ms, margin-left 500ms;
 }

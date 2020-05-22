@@ -7,11 +7,7 @@ import './Body.css'
 export default function Body(props) {
     const bodyRef = useRef()
     const [chatsRef, setchatsRef] = useState()
-    let marginTop = 110 + JSON.parse(props.scrolled)
-    // let bodyStyle = {
-    //     marginTop: marginTop + "px",
-    //     height: "calc(100vh - " + marginTop + "px)",
-    // }
+
     useEffect(() => {
         props.shareRef(bodyRef)
         if(chatsRef)
@@ -20,7 +16,7 @@ export default function Body(props) {
 
     return (
         <div className={"body"} ref={bodyRef}>
-            <Chats setchatsRef={chatsRef => setchatsRef(chatsRef)} scrolled={props.scrolled} names={props.names}/>
+            <Chats setchatsRef={chatsRef => setchatsRef(chatsRef)} scrolled={props.scrolled} names={props.names} setroomDetails={roomDetails => props.setroomDetails(roomDetails)}/>
             <Status />
             <Calls />
         </div>

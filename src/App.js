@@ -4,6 +4,7 @@ import Header from './components/header'
 import Body from './components/Body';
 import MenuContainer from './components/MenuContainer';
 import Room from './components/Room';
+import Block from './components/Block';
 function App() {
 
   const [bodyRef, setBodyRef] = useState(null)
@@ -97,7 +98,7 @@ function App() {
       chatsRefForBody.addEventListener('scroll', e => {
         if(scrollTimer)
           clearTimeout(scrollTimer)
-        headerRef.style.transition =  "margin-top 0ms"
+        headerRef.style.transition =  "margin-top 0ms,  margin-left 500ms"
         if(!lastScrolledTopValue)
           lastScrolledTopValue = chatsRefForBody.scrollTop
 
@@ -108,13 +109,13 @@ function App() {
           scrolled = 0
         setMarginTop(scrolled)
         scrollTimer = setTimeout(() => {
-          headerRef.style.transition =  "margin-top 400ms"
+          headerRef.style.transition =  "margin-top 400ms,  margin-left 500ms"
           if(scrolled < -30 && chatsRefForBody.scrollTop > 60)
             scrolled = -60
           else
             scrolled = 0
           setMarginTop(scrolled)
-        }, 400);
+        }, 100);
         lastScrolledTopValue = chatsRefForBody.scrollTop
       })
     }
@@ -124,14 +125,33 @@ function App() {
     }
   },[chatsRefForBody, headerRef])
 
+  //to send open room chat data
+  const [roomDetails, setroomDetails] = useState()
+  useEffect(() => {
+    if(headerRef && bodyRef)
+    {
+        if(roomDetails)
+        {
+            headerRef.style.marginLeft = "-100px"
+            bodyRef.style.marginLeft = "-100px"
+        }
+        else
+        {
+          headerRef.style.marginLeft = "0px"
+          bodyRef.style.marginLeft = "0px"
+        }
+    }
+  }, [roomDetails])
+
   return (
     <div className="App">
       <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} marginTop={marginTop}/>
-      <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} names={namesArr}/>
+      <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} names={namesArr}  setroomDetails={roomDetails => setroomDetails(roomDetails)}/>
       {
         showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass}/>: null
       }
-      <Room />
+      <Room roomDetails={roomDetails} setroomDetails={roomDetails => setroomDetails(roomDetails)}/>
+      <Block roomDetails={roomDetails ? {zIndex: 2, opacity: 0.6} : {zIndex: -2, opacity: 0}}/>
     </div>
   );
 }
