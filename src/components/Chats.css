@@ -8,6 +8,8 @@
 }
 .chatsContainer > div:nth-last-child(1) {
     height: 130px;
-    color: silver;
-    padding-top: 30px;
+    color: #777676;
+    padding-top: 20px;
+    font-size: 12px;
+    font-weight: bold;
 }

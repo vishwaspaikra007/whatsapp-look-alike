@@ -3,19 +3,19 @@ import './Room.css'
 import ProfilePic from './ProfilePic'
 import {ReactComponent as Camera} from '../assets/camera.svg'
 export default function Room(props) {
-    const [marginLeft, setMarginLeft] = useState("100%")
+    const [x, setX] = useState(100)
     useEffect(() => {
         if(props.roomDetails)
         {    
-            setMarginLeft("0%")
+            setX(0)
         }
         else
         {    
-            setMarginLeft("100%")
+            setX(100)
         }
     }, [props.roomDetails])
     return (
-        <div className={"room"} style={{marginLeft: marginLeft}}>
+        <div className={"room"} style={{transform: `translate(${x}%,0px)`}}>
             <div className="background-image"></div>
             <div className={"roomHeader"}>
                 <div className={"back"} onClick={() => props.setroomDetails(undefined)}><i className="return" /></div>

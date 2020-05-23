@@ -18,7 +18,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    transition: margin-left 500ms;
+    z-index: 2;
+    transition: transform 300ms ease-in-out;
 }
 .menu {
     display: grid;

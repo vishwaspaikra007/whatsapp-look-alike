@@ -5,6 +5,8 @@ import Body from './components/Body';
 import MenuContainer from './components/MenuContainer';
 import Room from './components/Room';
 import Block from './components/Block';
+import DirectAccess from './components/DirectAccess';
+import AvailableChats from './components/AvailableChats';
 function App() {
 
   const [bodyRef, setBodyRef] = useState(null)
@@ -96,9 +98,10 @@ function App() {
       let scrolled = 0
       let scrollTimer
       chatsRefForBody.addEventListener('scroll', e => {
+        console.log("hr")
         if(scrollTimer)
           clearTimeout(scrollTimer)
-        headerRef.style.transition =  "margin-top 0ms,  margin-left 500ms"
+        headerRef.style.transition = "0ms"
         if(!lastScrolledTopValue)
           lastScrolledTopValue = chatsRefForBody.scrollTop
 
@@ -109,13 +112,13 @@ function App() {
           scrolled = 0
         setMarginTop(scrolled)
         scrollTimer = setTimeout(() => {
-          headerRef.style.transition =  "margin-top 400ms,  margin-left 500ms"
+          headerRef.style.transition = "transform 300ms ease-in-out"
           if(scrolled < -30 && chatsRefForBody.scrollTop > 60)
             scrolled = -60
           else
             scrolled = 0
           setMarginTop(scrolled)
-        }, 100);
+        }, 300);
         lastScrolledTopValue = chatsRefForBody.scrollTop
       })
     }
@@ -127,31 +130,35 @@ function App() {
 
   //to send open room chat data
   const [roomDetails, setroomDetails] = useState()
+  // open available chats
+  const [openAvailableChats, setOpenAvailableChats] = useState(false)
   useEffect(() => {
     if(headerRef && bodyRef)
     {
-        if(roomDetails)
+        if(roomDetails || openAvailableChats)
         {
-            headerRef.style.marginLeft = "-100px"
-            bodyRef.style.marginLeft = "-100px"
+            headerRef.style.transform = `translate(-100px,${marginTop}px)`
+            bodyRef.style.transform = "translate(-100px,0px)"
         }
         else
         {
-          headerRef.style.marginLeft = "0px"
-          bodyRef.style.marginLeft = "0px"
+          headerRef.style.transform = `translate(0px,${marginTop}px)`
+          bodyRef.style.transform = "translate(0px,0px)"
         }
     }
-  }, [roomDetails])
-
+  }, [roomDetails,openAvailableChats])
+  
   return (
     <div className="App">
-      <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} marginTop={marginTop}/>
+      <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop}/>
       <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} names={namesArr}  setroomDetails={roomDetails => setroomDetails(roomDetails)}/>
       {
         showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass}/>: null
       }
+      <DirectAccess setOpenAvailableChats={bool => setOpenAvailableChats(bool)}/>
       <Room roomDetails={roomDetails} setroomDetails={roomDetails => setroomDetails(roomDetails)}/>
-      <Block roomDetails={roomDetails ? {zIndex: 2, opacity: 0.6} : {zIndex: -2, opacity: 0}}/>
+      <AvailableChats openAvailableChats={openAvailableChats}  setOpenAvailableChats={bool => setOpenAvailableChats(bool)}/>
+      <Block roomDetails={(roomDetails || openAvailableChats) ? {zIndex: 2, opacity: 0.6} : {zIndex: -2, opacity: 0}}/>
     </div>
   );
 }
