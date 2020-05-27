@@ -98,8 +98,7 @@ function App() {
       let scrolled = 0
       let scrollTimer
       chatsRefForBody.addEventListener('scroll', e => {
-        console.log("hr")
-        if(scrollTimer)
+       if(scrollTimer)
           clearTimeout(scrollTimer)
         headerRef.style.transition = "0ms"
         if(!lastScrolledTopValue)

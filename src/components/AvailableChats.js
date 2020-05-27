@@ -30,9 +30,9 @@ export default function AvailableChats(props) {
                     <p>New Contact</p>
                 </div>
                 {
-                    m.map(i => {
+                    m.map((i, index) => {
                         return (
-                            <div className="savedContacts">
+                            <div key={index} className="savedContacts">
                                 <span><Person className="Person"/></span>
                                 <div>
                                     <span>{i}</span>
