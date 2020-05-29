@@ -9,6 +9,7 @@ import Room from './components/Room';
 import Block from './components/Block';
 import DirectAccess from './components/DirectAccess';
 import AvailableChats from './components/AvailableChats';
+import WelcomePage from './components/WelcomePage';
 function App() {
 
   const [bodyRef, setBodyRef] = useState(null)
@@ -226,6 +227,7 @@ function App() {
   }, [clickedFromApp, passedFromCalls, passedFromStatus, roomDetails, openAvailableChats])
   return (
     <div className="App">
+      <WelcomePage />
       <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} />
       <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} names={namesArr} setroomDetails={roomDetails => setroomDetails(roomDetails)} />
       {

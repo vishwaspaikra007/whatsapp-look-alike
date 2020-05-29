@@ -1,0 +1,18 @@
+import React from 'react'
+import './WelcomePage.css'
+export default function WelcomePage() {
+    return (
+        <div className="WelcomePage">
+            <h1>Welcome to WhatsApp</h1>
+            <div>
+                <span></span>
+            </div>
+            <p>Read our <span>Privacy Policy</span>. Tap "Agree and continue" to accept the <span>Terms of Service</span>.</p>
+            <button>AGREE AND CONTINUE</button>
+            <footer>
+                from
+                <span>FACEBOOK</span>
+            </footer>
+        </div>
+    )
+}
