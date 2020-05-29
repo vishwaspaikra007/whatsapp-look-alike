@@ -1,4 +1,5 @@
 import React from 'react'
+
 import './Room.css'
 import './AvailableChats.css'
 import {ReactComponent as AddGroup} from '../assets/addGroup.svg'
@@ -9,10 +10,15 @@ export default function AvailableChats(props) {
         transform: props.openAvailableChats ? `translate(0px,0px)` : `translate(100%,0px)` 
     }
     let m = ["Adam", "Alex", "Aaron", "Ben", "Carl", "Dan", "David", "Edward"]
+
+    const closeAvailableChats = ()=> {
+        // props.setOpenAvailableChats(false)
+        window.history.back()   
+    }
     return (
         <div className="room AvailableChats" style={style}>
             <div className="menu">
-                <div className={"s"} onClick={() => props.setOpenAvailableChats(false)}><i className="return" /></div>
+                <div className={"s"} onClick={() => closeAvailableChats()}><i className="return" /></div>
                 <div className="a">
                     <span>Select contact</span>
                     <span>0 contacts</span>

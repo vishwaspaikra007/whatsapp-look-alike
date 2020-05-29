@@ -18,12 +18,17 @@ export default function Room(props) {
         }
     }, [props.roomDetails])
 
+    const goBack =()=> {
+        // props.setroomDetails(undefined)
+        window.history.back()
+    }
+
     return (
         <React.Fragment>
         <div className={"room"} style={{transform: `translate(${x}%,0px)`}}>
             <div className="background-image"></div>
             <div className={"roomHeader"}>
-                <div className={"back"} onClick={() => props.setroomDetails(undefined)}><i className="return" /></div>
+                <div className={"back"} onClick={() => goBack()}><i className="return" /></div>
                 <div className="picContainer">
                     <ProfilePic />
                 </div>
@@ -34,7 +39,7 @@ export default function Room(props) {
             </div>
             <div className={"messages"}></div>
         </div>
-        <div className={"create"} style={{transform: `translate(${createX}vw,0px)`}}>
+        <div className={"create"} style={{transform: `translate(${createX}%,0px)`}}>
             <div className="chatInput">
                 <div className="emoji"><i /></div>
                 <input className="input" placeholder="Type a messsage"/>

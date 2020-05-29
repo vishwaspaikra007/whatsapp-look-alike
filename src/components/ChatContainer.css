@@ -3,23 +3,25 @@
     display: grid;
     grid-template-columns: 80px auto;
 }
-.ChatContainer > div {
+.ChatContainer > div, .ChatContainer > a {
     display: grid;
     grid-template-rows: repeat(2, 1fr);
+    text-decoration: none;
+    color: inherit;
 }
 .ChatContainer > div:nth-child(1) {
     display: block;
 }
-.ChatContainer > div > div{
+.ChatContainer > div > div, .ChatContainer > a > div{
     display: grid;
     text-align: left;
     overflow: hidden;
     margin-right: 10px;
 }
-.ChatContainer > div > div:nth-child(1){
+.ChatContainer > div > div:nth-child(1), .ChatContainer > a > div:nth-child(1){
     grid-template-columns: auto 80px;
 }
-.ChatContainer > div > div:nth-child(2){
+.ChatContainer > div > div:nth-child(2), .ChatContainer > a > div:nth-child(2){
     grid-template-columns: auto 30px;
     border-bottom: 0.5px solid silver;
 }
