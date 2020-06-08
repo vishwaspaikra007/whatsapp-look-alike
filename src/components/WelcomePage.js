@@ -1,5 +1,7 @@
 import React from 'react'
 import './WelcomePage.css'
+import './Button.css'
+
 export default function WelcomePage() {
     return (
         <div className="WelcomePage">

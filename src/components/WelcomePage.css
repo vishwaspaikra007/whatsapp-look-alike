@@ -3,17 +3,18 @@
     height: 100vh;
     position: fixed;
     display: grid;
-    grid-template-rows: 130px auto 50px 50px 130px;
-    z-index: 20;
+    grid-template-rows: 100px auto 50px 50px 130px;
+    z-index: 10;
     background-color: white;
     top: 0;
     left: 0;
     color: silver;
 }
 .WelcomePage > h1 {
-    padding-top: 10vh;
+    padding-top: 70px;
     color: #118a7c;
-    font-size: 8vw;
+    font-size: 8vmin;
+    height: min-content;
 }
 .WelcomePage > div {
     display: flex;
@@ -21,32 +22,16 @@
     align-items: center;
 }
 .WelcomePage > div > span {
-    width: 70vw;
-    height: 70vw;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
-    background-image: url(/whatsapp-look-alike/static/media/WelcomeBg.f32f1158.jpg);
+    background-image: url('../assets/WelcomeBg.jpg');
     display: block;
     background-size: 150%;
     background-position: center;
 }
 span {
     color: #31aed1;
-}
-.WelcomePage > button {
-    border: none;
-    width: 75%;
-    margin: auto;
-    padding: 13px;
-    border-radius: 3px;
-    color: white;
-    font-weight: 500;
-    outline: none;
-    background: linear-gradient(170deg, #01d101, #03a303);
-    box-shadow: 2px 2px 12px -6px black, -3px -3px 12px -6px #01d101;
-}
-.WelcomePage > button:active {
-    transform: scale(0.99);
-    box-shadow: 1px 1px 10px -6px black, -1px -1px 10px -6px #01d101;
 }
 footer {
     padding-top: 65px;
@@ -60,4 +45,7 @@ footer > span {
     text-transform: uppercase;
     padding-top: 7px;
     font-weight: bold;
+}
+.WelcomePage > button {
+    max-width: 50vh;
 }
