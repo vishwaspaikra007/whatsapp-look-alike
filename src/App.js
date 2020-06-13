@@ -11,6 +11,7 @@ import DirectAccess from './components/DirectAccess';
 import AvailableChats from './components/AvailableChats';
 import WelcomePage from './components/WelcomePage';
 import EnterEmail from './components/EnterEmail';
+import EnterNameAndDp from './components/EnterNameAndDp';
 function App() {
 
   const [bodyRef, setBodyRef] = useState(null)
@@ -24,10 +25,16 @@ function App() {
   const [passedFromStatus, setPassedFromStatus] = useState(false)
   const [passedFromCalls, setPassedFromCalls] = useState(false)
   const [clickedFromApp, setClickedFromApp] = useState(true)
+  const [agreed, setAgreed] = useState(false)
+  const [registered, setRegistered] = useState(false)
   //to send open room chat data
   const [roomDetails, setroomDetails] = useState()
   // open available chats
   const [openAvailableChats, setOpenAvailableChats] = useState(false)
+
+  const [email, setEmail] = useState(undefined)
+  const [PWD, setPWD] = useState(undefined)
+  const [name, setName] = useState(undefined)
 
   const clickedFromAppRef = useRef(clickedFromApp)
   const passedFromCallsRef = useRef(passedFromCalls)
@@ -226,19 +233,32 @@ function App() {
     openAvailableChatsRef.current = openAvailableChats
     roomDetailsRef.current = roomDetails
   }, [clickedFromApp, passedFromCalls, passedFromStatus, roomDetails, openAvailableChats])
+  
   return (
     <div className="App">
-      <WelcomePage />
-      <EnterEmail />
-      <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} />
-      <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} names={namesArr} setroomDetails={roomDetails => setroomDetails(roomDetails)} />
-      {
-        showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass} /> : null
+      
+      {agreed ? <React.Fragment>
+          {(email && PWD) ? 
+            <React.Fragment>
+              {registered ? null : <EnterNameAndDp setRegistered={registered => setRegistered(registered)}  email={email} PWD={PWD} setName={name => setName(name)}/>}
+            </React.Fragment>
+           : <EnterEmail setEmail={email => setEmail(email)} setPWD={PWD => setPWD(PWD)}/>}
+        </React.Fragment>
+       : <WelcomePage setAgreed={agreed => setAgreed(agreed)}/>}
+      
+      {registered ? <React.Fragment>
+          <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} />
+          <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} names={namesArr} setroomDetails={roomDetails => setroomDetails(roomDetails)} />
+          { 
+            showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass} /> : null
+          }
+          <DirectAccess setOpenAvailableChats={bool => setOpenAvailableChats(bool)} />
+          <Room roomDetails={roomDetails} setroomDetails={roomDetails => setroomDetails(roomDetails)} />
+          <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} />
+          <Block roomDetails={(roomDetails || openAvailableChats) ? { zIndex: 2, opacity: 0.6 } : { zIndex: -2, opacity: 0 }} />
+        </React.Fragment> : null
       }
-      <DirectAccess setOpenAvailableChats={bool => setOpenAvailableChats(bool)} />
-      <Room roomDetails={roomDetails} setroomDetails={roomDetails => setroomDetails(roomDetails)} />
-      <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} />
-      <Block roomDetails={(roomDetails || openAvailableChats) ? { zIndex: 2, opacity: 0.6 } : { zIndex: -2, opacity: 0 }} />
+
     </div>
   );
 }
