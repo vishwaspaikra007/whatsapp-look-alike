@@ -19,6 +19,8 @@
     outline: none;
     border: none;
     border-bottom: 2px solid #118a7c;
+    display: block;
+    margin: 15px auto;
 }
 .EnterEmail > input[type=number] {
     display: block;

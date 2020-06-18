@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import axios from 'axios'
 import './EnterNameAndDp.css'
 import './EnterEmail.css'
@@ -6,8 +6,9 @@ import './EnterEmail.css'
 export default function EnterNameAndDp(props) {
     const [name, setName] = useState(undefined)
     const [disabled, setDisabled] = useState(false)
+    
     const registrationAddress = props.production ? 'https://vishwas-auth.herokuapp.com/register' : 'http://localhost:3000/register'
-
+    const enterNameRef = useRef()
     let data = {}
     const setUserInDB = () => {
         setDisabled(true)
@@ -16,12 +17,28 @@ export default function EnterNameAndDp(props) {
         data.PWD = props.PWD
         axios.post(registrationAddress, data, { withCredentials: true })
         .then(result => {
-            console.log(result)
+            if(result.data.registered) {
+                setDisabled(false)
+                props.setPWD('userPassword')
+                props.setAccessJWTTokken(result.data.signedJWT)
+                props.setRegistered(result.data.registered)
+            } else {
+                setDisabled(false)
+                alert(result.data.msg)
+                enterNameRef.current.focus()
+            }
+        }).catch(err => {
+            console.log(err)
             setDisabled(false)
-            props.setRegistered(result.data.registered)
+            alert("something went wrong try again")
+            enterNameRef.current.focus()
         })
     }
 
+    useEffect(() => {
+        if(enterNameRef)
+            enterNameRef.current.focus()
+    }, [])
     return (
         <div className="EnterEmail EnterNameAndDp">
             <h2>Profile info</h2>
@@ -29,7 +46,7 @@ export default function EnterNameAndDp(props) {
             <div className="imgContainer">
                 <img className="defaultImg" src={require('../assets/person.svg')} alt="profile pic"/>
             </div>
-            <input disabled={disabled} type="text" name="name" onChange={e => setName(e.target.value)}/>
+            <input ref={enterNameRef} disabled={disabled} type="text" name="name" onChange={e => setName(e.target.value)}/>
             <button onClick={() => setUserInDB()} disabled={disabled}>Next</button>
         </div>
     )

@@ -30,7 +30,7 @@
     background-size: 150%;
     background-position: center;
 }
-span {
+.WelcomePage > p > span {
     color: #31aed1;
 }
 footer {

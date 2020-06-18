@@ -21,12 +21,18 @@ export default function EnterEmail(props) {
 
         const verifyOTPAddress = props.production ? 'https://vishwas-auth.herokuapp.com/verifyOTP' : 'http://localhost:3000/verifyOTP'
 
+        const loginAddress = props.production ? 'https://vishwas-auth.herokuapp.com/login' : 'http://localhost:3000/login'
+
         let data = {}
         data.to = email
-        if (!showOTPBox) {
+        if (!showOTPBox && !showPWDBox) {
             axios.post(requestMailAddress, data, { withCredentials: true }).then(result => {
                 setDisabled(false)
-                if (result.data.OTPsent) {
+                if(result.data.registered) {
+                    setShowPWDBox(true)
+                    props.setRegistered(true)
+                }
+                else if (result.data.OTPsent) {
                     setShowOTPBox(true)
                 } else {
                     alert("message not sent try again")
@@ -38,7 +44,6 @@ export default function EnterEmail(props) {
             data.otp = otp
             axios.post(verifyOTPAddress, data, { withCredentials: true }).then(result => {
                 setDisabled(false)
-                console.log(result)
                 if (result.data.verified) {
                     setShowPWDBox(true)
                 } else {
@@ -47,8 +52,29 @@ export default function EnterEmail(props) {
                 }
             })
         } else {
-            if(PWD === PWDConfirm) {
-                data.password = PWD
+            if(props.registered) {
+                data.email = email
+                data.PWD = PWD
+                axios.post(loginAddress, data, { withCredentials: true})
+                    .then(result => {
+                        if(result.data.logedIn)
+                        {
+                            props.setAccessJWTTokken(result.data.signedJWT)
+                            props.setEmail(email)
+                            props.setPWD('userPassword')
+                        } else {
+                            alert("Either password or email is wrong")
+                            setDisabled(false)
+                            PWDRef.current.focus()
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                        alert("Either password or email is wrong")
+                        setDisabled(false)
+                        PWDRef.current.focus()
+                    })
+            }
+            else if(PWD === PWDConfirm) {
                 props.setEmail(email)
                 props.setPWD(PWD)
             } else {
@@ -61,7 +87,7 @@ export default function EnterEmail(props) {
 
     useEffect(() => {
        emailInputRef.current.focus()
-    }, [emailInputRef])
+    }, [emailInputRef.current])
 
     useEffect(() => {
         if(showOTPBox)
@@ -69,9 +95,9 @@ export default function EnterEmail(props) {
      }, [showOTPBox])
 
      useEffect(() => {
-        if(showOTPBox)
+        if(showPWDBox)
             PWDRef.current.focus()
-     }, [PWDRef])
+     }, [showPWDBox])
      
     return (
         <div className="EnterEmail">
@@ -83,9 +109,10 @@ export default function EnterEmail(props) {
             {
                 showPWDBox ? 
                 <div className={"PWDContainer"}>
+                    <br />
                     <p>Enter password</p>
                      <input ref={PWDRef} type="password" min="6" placeholder="password" onChange={e => setPWD(e.target.value)}  disabled={disabled}/>
-                     <input ref={PWDConfirmRef} type="password" placeholder="confirm password" onChange={e => setPWDConfirm(e.target.value)}  disabled={disabled}/>
+                     {props.registered ? null : <input ref={PWDConfirmRef} type="password" placeholder="confirm password" onChange={e => setPWDConfirm(e.target.value)}  disabled={disabled}/>}
                 </div> : null
             }
             <button onClick={() => requestOTP()} disabled={disabled}>Next</button>

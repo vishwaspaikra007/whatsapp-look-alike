@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
+import axios from 'axios'
 import './App.css';
 import Header from './components/header'
 import Body from './components/Body';
@@ -27,6 +27,8 @@ function App() {
   const [clickedFromApp, setClickedFromApp] = useState(true)
   const [agreed, setAgreed] = useState(false)
   const [registered, setRegistered] = useState(false)
+  const [accessJWTTokken, setAccessJWTTokken] = useState(undefined)
+  const [production, setProduction] = useState(false)
   //to send open room chat data
   const [roomDetails, setroomDetails] = useState()
   // open available chats
@@ -34,7 +36,6 @@ function App() {
 
   const [email, setEmail] = useState(undefined)
   const [PWD, setPWD] = useState(undefined)
-  const [name, setName] = useState(undefined)
 
   const clickedFromAppRef = useRef(clickedFromApp)
   const passedFromCallsRef = useRef(passedFromCalls)
@@ -234,15 +235,33 @@ function App() {
     roomDetailsRef.current = roomDetails
   }, [clickedFromApp, passedFromCalls, passedFromStatus, roomDetails, openAvailableChats])
   
+  const authorize = ()=> {
+    const authorizeAddress = production ? 'https://vishwas-auth.herokuapp.com/refreshToken' : 'http://localhost:3000/refreshToken'
+    axios.get(authorizeAddress, { withCredentials: true })
+      .then(result => {
+        if(result.data.logedIn) {
+          setAccessJWTTokken(result.data.signedJWT)
+          setEmail(result.data.email)
+          setPWD("userPassword")
+          setRegistered(true)
+          setAgreed(true)
+        }
+      }).catch(err => [
+        console.log(err + " login again")
+      ])
+  }
+  useEffect(() => {
+    // authorize()
+  }, [])
   return (
     <div className="App">
       
       {agreed ? <React.Fragment>
           {(email && PWD) ? 
             <React.Fragment>
-              {registered ? null : <EnterNameAndDp setRegistered={registered => setRegistered(registered)}  email={email} PWD={PWD} setName={name => setName(name)}/>}
+              {registered ? null : <EnterNameAndDp accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} production={production} setRegistered={registered => setRegistered(registered)}  email={email} PWD={PWD} setPWD={pwd => setPWD(pwd)}/>}
             </React.Fragment>
-           : <EnterEmail setEmail={email => setEmail(email)} setPWD={PWD => setPWD(PWD)}/>}
+           : <EnterEmail  accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} registered={registered} setRegistered={registered => setRegistered(registered)} setEmail={email => setEmail(email)} setPWD={PWD => setPWD(PWD)}/>}
         </React.Fragment>
        : <WelcomePage setAgreed={agreed => setAgreed(agreed)}/>}
       
