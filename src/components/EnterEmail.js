@@ -69,7 +69,7 @@ export default function EnterEmail(props) {
                         }
                     }).catch(err => {
                         console.log(err)
-                        alert("Either password or email is wrong")
+                        alert("something went wrong")
                         setDisabled(false)
                         PWDRef.current.focus()
                     })
@@ -87,7 +87,7 @@ export default function EnterEmail(props) {
 
     useEffect(() => {
        emailInputRef.current.focus()
-    }, [emailInputRef.current])
+    }, [])
 
     useEffect(() => {
         if(showOTPBox)

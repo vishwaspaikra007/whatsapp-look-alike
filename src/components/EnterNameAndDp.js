@@ -6,10 +6,30 @@ import './EnterEmail.css'
 export default function EnterNameAndDp(props) {
     const [name, setName] = useState(undefined)
     const [disabled, setDisabled] = useState(false)
+    const [registered, setRegistered] = useState(false)
     
     const registrationAddress = props.production ? 'https://vishwas-auth.herokuapp.com/register' : 'http://localhost:3000/register'
+
+    const saveUserMetaDataAddress = props.production ? 'https://vishwas-auth.herokuapp.com/saveUserMetaData' : 'http://localhost:3000/saveUserMetaData'
     const enterNameRef = useRef()
     let data = {}
+
+    const saveUserMetaDataFunc = ()=> {
+        axios.post(saveUserMetaDataAddress, {}, { withCredentials: true })
+        .then(result => {
+            setDisabled(false)
+            if(result.data.saved) {
+                props.setPWD('userPassword')
+                props.setRegistered(true)
+            } else {
+                alert(result.data.msg + "try one more time")
+            }
+        }).catch(err => {
+            setDisabled(false)
+            console.log(err)
+            alert("error occured try again")
+        })
+    }
     const setUserInDB = () => {
         setDisabled(true)
         data.name = name
@@ -18,10 +38,9 @@ export default function EnterNameAndDp(props) {
         axios.post(registrationAddress, data, { withCredentials: true })
         .then(result => {
             if(result.data.registered) {
-                setDisabled(false)
-                props.setPWD('userPassword')
                 props.setAccessJWTTokken(result.data.signedJWT)
-                props.setRegistered(result.data.registered)
+                setRegistered(result.data.registered)
+                saveUserMetaDataFunc()
             } else {
                 setDisabled(false)
                 alert(result.data.msg)
@@ -47,7 +66,7 @@ export default function EnterNameAndDp(props) {
                 <img className="defaultImg" src={require('../assets/person.svg')} alt="profile pic"/>
             </div>
             <input ref={enterNameRef} disabled={disabled} type="text" name="name" onChange={e => setName(e.target.value)}/>
-            <button onClick={() => setUserInDB()} disabled={disabled}>Next</button>
+            <button onClick={() => registered ? saveUserMetaDataFunc() : setUserInDB()} disabled={disabled}>Next</button>
         </div>
     )
 }
