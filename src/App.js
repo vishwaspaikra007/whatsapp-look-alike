@@ -12,6 +12,7 @@ import AvailableChats from './components/AvailableChats';
 import WelcomePage from './components/WelcomePage';
 import EnterEmail from './components/EnterEmail';
 import EnterNameAndDp from './components/EnterNameAndDp';
+import socket from './components/socket.io-clientConfig'
 function App() {
 
   const [bodyRef, setBodyRef] = useState(null)
@@ -45,6 +46,7 @@ function App() {
   let history = createBrowserHistory()
   const bodyDRef = useRef(bodyRef)
   const changedRef = useRef(true)
+
   //to generate random names
 
   let names = ["Adam", "Alex", "Aaron", "Ben", "Carl", "Dan", "David", "Edward", "Fred", "Frank", "George", "Hal", "Hank", "Ike", "John", "Jack", "Joe", "Larry", "Monte", "Matthew", "Mark", "Nathan", "Otto", "Paul", "Peter", "Roger", "Roger", "Steve", "Thomas", "Tim", "Ty", "Victor", "Walter"]
@@ -235,45 +237,85 @@ function App() {
     roomDetailsRef.current = roomDetails
   }, [clickedFromApp, passedFromCalls, passedFromStatus, roomDetails, openAvailableChats])
   
+
+  const connectSocket = ()=> {
+    socket.on('chats', data => {
+      console.log(data)
+    })
+  }
+
   const authorize = ()=> {
+    console.log("called for refresh token")
     const authorizeAddress = production ? 'https://vishwas-auth.herokuapp.com/refreshToken' : 'http://localhost:3000/refreshToken'
     axios.get(authorizeAddress, { withCredentials: true })
       .then(result => {
+        console.log("called for refresh token")
         if(result.data.logedIn) {
+          console.log("logged in")
           setAccessJWTTokken(result.data.signedJWT)
           setEmail(result.data.email)
           setPWD("userPassword")
           setRegistered(true)
           setAgreed(true)
+          connectSocket()
+        } else {
+          alert(result.data.msg)
         }
       }).catch(err => [
         console.log(err + " login again")
       ])
   }
   useEffect(() => {
-    // authorize()
+    if(accessJWTTokken)
+    {
+      console.log(accessJWTTokken)
+      axios.defaults.withCredentials = true
+      axios.defaults.headers.common['Authorization'] = "bearer " + accessJWTTokken
+    }
+  }, [accessJWTTokken])
+  
+  useEffect(() => {
+    console.log("set With Credentials")
+    authorize()
   }, [])
+
+  const reAuthorizationCheckAndConfig = (result)=> {
+    if(result.data.logedIn === true)
+    {
+        setAccessJWTTokken(result.data.signedJWT)
+        return true
+    } else if (result.data.logedIn === false) {
+        alert(result.data.msg)
+        setEmail(undefined)
+        setPWD(undefined)
+        setAccessJWTTokken(undefined)
+        setRegistered(false)
+    } else {
+      return false
+    }
+  }
+
   return (
     <div className="App">
       
       {agreed ? <React.Fragment>
           {(email && PWD) ? 
             <React.Fragment>
-              {registered ? null : <EnterNameAndDp accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} production={production} setRegistered={registered => setRegistered(registered)}  email={email} PWD={PWD} setPWD={pwd => setPWD(pwd)}/>}
+              {registered  && accessJWTTokken ? null : <EnterNameAndDp accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} production={production} setRegistered={registered => setRegistered(registered)}  email={email} PWD={PWD} setPWD={pwd => setPWD(pwd)}/>}
             </React.Fragment>
            : <EnterEmail  accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} registered={registered} setRegistered={registered => setRegistered(registered)} setEmail={email => setEmail(email)} setPWD={PWD => setPWD(PWD)}/>}
         </React.Fragment>
        : <WelcomePage setAgreed={agreed => setAgreed(agreed)}/>}
       
-      {registered ? <React.Fragment>
-          <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} />
+      {registered && accessJWTTokken ? <React.Fragment>
+          <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} accessJWTTokken={accessJWTTokken}/>
           <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} names={namesArr} setroomDetails={roomDetails => setroomDetails(roomDetails)} />
           { 
             showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass} /> : null
           }
           <DirectAccess setOpenAvailableChats={bool => setOpenAvailableChats(bool)} />
           <Room roomDetails={roomDetails} setroomDetails={roomDetails => setroomDetails(roomDetails)} />
-          <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} />
+          <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} email={email} reAuthorizationCheckAndConfig={result => reAuthorizationCheckAndConfig(result)} />
           <Block roomDetails={(roomDetails || openAvailableChats) ? { zIndex: 2, opacity: 0.6 } : { zIndex: -2, opacity: 0 }} />
         </React.Fragment> : null
       }

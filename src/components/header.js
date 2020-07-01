@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import './header.css'
-
+import axios from 'axios'
 export default function Header(props) {
     const [allowClick, setAllowClick] = useState(false)
     const headerRef = useRef()
@@ -19,6 +19,16 @@ export default function Header(props) {
         setAllowClick(true)
         props.setHeaderRefInApp(headerRef)
     },[])
+
+    useEffect(() => {
+    if(props.accessJWTTokken)
+    {
+        console.log(props.accessJWTTokken)
+        axios.defaults.withCredentials = true
+        axios.defaults.headers.common['Authorization'] = "bearer " + props.accessJWTTokken
+    }
+    }, [props.accessJWTTokken])
+     
     return (
         <div>
             <div className="header" style={headerStyle} ref={headerRef}>

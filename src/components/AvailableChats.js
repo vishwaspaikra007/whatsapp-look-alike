@@ -15,6 +15,13 @@ export default function AvailableChats(props) {
 
     const getContactsAddress = props.production ? 'https://vishwas-auth.herokuapp.com/getContacts' : 'http://localhost:3000/getContacts'
 
+    const sortAndSetArrayElement = (contact)=> {
+        console.log("contacts", contacts)
+        console.log("contact", contact)
+        setContacts(contacts => contacts.concat(contact).sort((obj1, obj2) => obj1.name < obj2.name))
+        console.log("contacts", contacts)
+    }
+
     const saveContact = ()=> {
         if(email)
         {
@@ -27,13 +34,15 @@ export default function AvailableChats(props) {
                         saveContact()
                         return null
                     }
-                    if(result.data.err) {
-                        alert(result.data.msg)
+                    if(result.data.roomCreated) {
+                        console.log(result)
+                        setEmail(undefined)
+                        setCreateRoom(false)
+                        sortAndSetArrayElement(result.data.contact)
+                        return null
                     }
-                    console.log(result)
-                    setEmail(undefined)
-                    setCreateRoom(false)
-                    // setEmail(undefined)
+                    alert(result.data.msg)
+                    console.log(result.data.msg)
                 })
             } else {
                 alert(email + " is your email")
@@ -62,9 +71,11 @@ export default function AvailableChats(props) {
 
     useEffect(() => {
         axios.post(getContactsAddress).then(result => {
+            console.log("get contacts", result)
             setContacts(result.data)
         })
     }, [])
+
     let m = ["Adam", "Alex", "Aaron", "Ben", "Carl", "Dan", "David", "Edward"]
 
     const closeAvailableChats = ()=> {
