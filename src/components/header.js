@@ -23,7 +23,6 @@ export default function Header(props) {
     useEffect(() => {
     if(props.accessJWTTokken)
     {
-        console.log(props.accessJWTTokken)
         axios.defaults.withCredentials = true
         axios.defaults.headers.common['Authorization'] = "bearer " + props.accessJWTTokken
     }

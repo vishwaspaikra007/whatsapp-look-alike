@@ -31,18 +31,21 @@ function App() {
   const [accessJWTTokken, setAccessJWTTokken] = useState(undefined)
   const [production, setProduction] = useState(false)
   //to send open room chat data
-  const [roomDetails, setroomDetails] = useState()
+  const [selectedRoomRecipientName, setSelectedRoomRecipientName] = useState()
+  const [selectedRoom_id, setSelectedRoom_id] = useState(undefined)
   // open available chats
   const [openAvailableChats, setOpenAvailableChats] = useState(false)
 
   const [email, setEmail] = useState(undefined)
   const [PWD, setPWD] = useState(undefined)
+  const [contacts, setContacts] = useState([])
+  const [roomsMessages, setRoomsMessages] = useState([])
 
   const clickedFromAppRef = useRef(clickedFromApp)
   const passedFromCallsRef = useRef(passedFromCalls)
   const passedFromStatusRef = useRef(passedFromStatus)
   const openAvailableChatsRef = useRef(openAvailableChats)
-  const roomDetailsRef = useRef(roomDetails)
+  const selectedRoomRecipientNameRef = useRef(selectedRoomRecipientName)
   let history = createBrowserHistory()
   const bodyDRef = useRef(bodyRef)
   const changedRef = useRef(true)
@@ -202,7 +205,7 @@ function App() {
 
   useEffect(() => {
     if (headerRef && bodyRef) {
-      if (roomDetails || openAvailableChats) {
+      if (selectedRoomRecipientName || openAvailableChats) {
         headerRef.style.transform = `translate(-100px,${marginTop}px)`
         bodyRef.style.transform = "translate(-100px,0px)"
       }
@@ -211,12 +214,12 @@ function App() {
         bodyRef.style.transform = "translate(0px,0px)"
       }
     }
-  }, [roomDetails, openAvailableChats])
+  }, [selectedRoomRecipientName, openAvailableChats])
 
 
   useEffect(() => {
     window.addEventListener('popstate', () => {
-      let a = !(openAvailableChatsRef.current || roomDetailsRef.current)
+      let a = !(openAvailableChatsRef.current || selectedRoomRecipientNameRef.current)
       // let b = 
       if (!clickedFromAppRef.current && a) {
         scrollTo(0)
@@ -224,7 +227,7 @@ function App() {
         // setMarginLeft(10)
       }
       setClickedFromApp(false)
-      setroomDetails(undefined)
+      setSelectedRoomRecipientName(undefined)
       setOpenAvailableChats(false)
     })
   }, [])
@@ -234,8 +237,8 @@ function App() {
     passedFromStatusRef.current = passedFromStatus
     passedFromCallsRef.current = passedFromCalls
     openAvailableChatsRef.current = openAvailableChats
-    roomDetailsRef.current = roomDetails
-  }, [clickedFromApp, passedFromCalls, passedFromStatus, roomDetails, openAvailableChats])
+    selectedRoomRecipientNameRef.current = selectedRoomRecipientName
+  }, [clickedFromApp, passedFromCalls, passedFromStatus, selectedRoomRecipientName, openAvailableChats])
   
 
   const connectSocket = ()=> {
@@ -265,17 +268,8 @@ function App() {
         console.log(err + " login again")
       ])
   }
-  useEffect(() => {
-    if(accessJWTTokken)
-    {
-      console.log(accessJWTTokken)
-      axios.defaults.withCredentials = true
-      axios.defaults.headers.common['Authorization'] = "bearer " + accessJWTTokken
-    }
-  }, [accessJWTTokken])
   
   useEffect(() => {
-    console.log("set With Credentials")
     authorize()
   }, [])
 
@@ -308,15 +302,23 @@ function App() {
        : <WelcomePage setAgreed={agreed => setAgreed(agreed)}/>}
       
       {registered && accessJWTTokken ? <React.Fragment>
+
           <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} accessJWTTokken={accessJWTTokken}/>
-          <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} names={namesArr} setroomDetails={roomDetails => setroomDetails(roomDetails)} />
+
+          <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} names={namesArr} setSelectedRoomRecipientName={selectedRoomRecipientName => setSelectedRoomRecipientName(selectedRoomRecipientName)}  setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} contacts={contacts}/>
+
           { 
             showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass} /> : null
           }
+
           <DirectAccess setOpenAvailableChats={bool => setOpenAvailableChats(bool)} />
-          <Room roomDetails={roomDetails} setroomDetails={roomDetails => setroomDetails(roomDetails)} />
-          <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} email={email} reAuthorizationCheckAndConfig={result => reAuthorizationCheckAndConfig(result)} />
-          <Block roomDetails={(roomDetails || openAvailableChats) ? { zIndex: 2, opacity: 0.6 } : { zIndex: -2, opacity: 0 }} />
+          
+          <Room selectedRoomRecipientName={selectedRoomRecipientName} setSelectedRoomRecipientName={selectedRoomRecipientName => setSelectedRoomRecipientName(selectedRoomRecipientName)} selectedRoom_id={selectedRoom_id} setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)}/>
+
+          <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} email={email} reAuthorizationCheckAndConfig={result => reAuthorizationCheckAndConfig(result)} setContacts={contacts => setContacts(contacts)} setRoomsMessages={rooms => setRoomsMessages(rooms)}/>
+          
+          <Block blockStyle={(selectedRoomRecipientName || openAvailableChats) ? { zIndex: 2, opacity: 0.6 } : { zIndex: -2, opacity: 0 }} />
+
         </React.Fragment> : null
       }
 

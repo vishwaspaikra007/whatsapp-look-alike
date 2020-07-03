@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import './Room.css'
 import ProfilePic from './ProfilePic'
-import {ReactComponent as Camera} from '../assets/camera.svg'
 export default function Room(props) {
     const [x, setX] = useState(100)
     const [createX, setCreateX] = useState(100)
     useEffect(() => {
-        if(props.roomDetails)
+        console.log('props.selectedRoom_id', props.selectedRoom_id)
+        if(props.selectedRoomRecipientName)
         {    
             setX(0)
             setCreateX(0)
@@ -16,10 +16,11 @@ export default function Room(props) {
             setX(100)
             setCreateX(100)
         }
-    }, [props.roomDetails])
+    }, [props.selectedRoomRecipientName])
 
     const goBack =()=> {
-        // props.setroomDetails(undefined)
+        props.setSelectedRoomRecipientName(undefined)
+        props.setSelectedRoom_id(undefined)
         window.history.back()
     }
 
@@ -32,7 +33,7 @@ export default function Room(props) {
                 <div className="picContainer">
                     <ProfilePic />
                 </div>
-                <div className={"name"}>{props.roomDetails}</div>
+                <div className={"name"}>{props.selectedRoomRecipientName}</div>
                 <div className="videoCall" ><i className="video-call" /></div>
                 <div className="audioCall" ><i className="call" /></div>
                 <div className="menu-room"><i className="vertical-menu" /></div>

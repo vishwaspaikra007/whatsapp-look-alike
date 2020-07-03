@@ -16,7 +16,7 @@ export default function Body(props) {
 
     return (
         <div className={"body"} ref={bodyRef}>
-            <Chats setchatsRef={chatsRef => setchatsRef(chatsRef)} scrolled={props.scrolled} names={props.names} setroomDetails={roomDetails => props.setroomDetails(roomDetails)}/>
+            <Chats setchatsRef={chatsRef => setchatsRef(chatsRef)} scrolled={props.scrolled} names={props.names} setSelectedRoomRecipientName={selectedRoomRecipientName => props.setSelectedRoomRecipientName(selectedRoomRecipientName)}  setSelectedRoom_id={selectedRoom_id => props.setSelectedRoom_id(selectedRoom_id)} contacts={props.contacts}/>
             <Status />
             <Calls />
         </div>

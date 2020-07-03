@@ -71,12 +71,18 @@ export default function AvailableChats(props) {
 
     useEffect(() => {
         axios.post(getContactsAddress).then(result => {
+            const {contacts, roomsMessages} = result.data
             console.log("get contacts", result)
-            setContacts(result.data)
+            setContacts(contacts)
+            let modifiedContacts = contacts.map(obj => {
+                obj['lastMessageData'] = roomsMessages[obj._id][roomsMessages[obj._id].length - 1]
+                return obj
+            })
+            console.log('modifiedContacts', modifiedContacts)
+            props.setContacts(modifiedContacts)
+            props.setRoomsMessages(result.data.roomsMessages)
         })
     }, [])
-
-    let m = ["Adam", "Alex", "Aaron", "Ben", "Carl", "Dan", "David", "Edward"]
 
     const closeAvailableChats = ()=> {
         // props.setOpenAvailableChats(false)
