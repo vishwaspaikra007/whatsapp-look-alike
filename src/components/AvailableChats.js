@@ -4,6 +4,7 @@ import './Room.css'
 import './AvailableChats.css'
 import {ReactComponent as AddGroup} from '../assets/addGroup.svg'
 import {ReactComponent as Person} from '../assets/person.svg'
+import socket from './socket.io-clientConfig'
 
 export default function AvailableChats(props) {
 
@@ -39,6 +40,7 @@ export default function AvailableChats(props) {
                         setEmail(undefined)
                         setCreateRoom(false)
                         sortAndSetArrayElement(result.data.contact)
+                        socket.emit('joinRoom', result.data.contact.chatRoomId)
                         return null
                     }
                     alert(result.data.msg)
@@ -81,6 +83,10 @@ export default function AvailableChats(props) {
             console.log('modifiedContacts', modifiedContacts)
             props.setContacts(modifiedContacts)
             props.setRoomsMessages(result.data.roomsMessages)
+            props.setUserData(result.data.userData)
+            contacts.map(obj => {
+                socket.emit('joinRoom',obj._id)
+            })
         })
     }, [])
 

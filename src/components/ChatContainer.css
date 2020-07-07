@@ -17,6 +17,10 @@
     text-align: left;
     overflow: hidden;
     margin-right: 10px;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .ChatContainer > div > div:nth-child(1), .ChatContainer > a > div:nth-child(1){
     grid-template-columns: auto 80px;
@@ -38,7 +42,18 @@
     padding-top: 20px;
     font-weight: 500;
     font-size: 17px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .lastMessage {
     color: gray;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.lastMessage > div {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }

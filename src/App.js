@@ -31,8 +31,9 @@ function App() {
   const [accessJWTTokken, setAccessJWTTokken] = useState(undefined)
   const [production, setProduction] = useState(false)
   //to send open room chat data
-  const [selectedRoomRecipientName, setSelectedRoomRecipientName] = useState()
+  const [selectedRoomRecipientName, setSelectedRoomRecipientName] = useState(undefined)
   const [selectedRoom_id, setSelectedRoom_id] = useState(undefined)
+  const [userData, setUserData] = useState({})
   // open available chats
   const [openAvailableChats, setOpenAvailableChats] = useState(false)
 
@@ -49,7 +50,7 @@ function App() {
   let history = createBrowserHistory()
   const bodyDRef = useRef(bodyRef)
   const changedRef = useRef(true)
-
+  const roomsMessagesRef = useRef()
   //to generate random names
 
   let names = ["Adam", "Alex", "Aaron", "Ben", "Carl", "Dan", "David", "Edward", "Fred", "Frank", "George", "Hal", "Hank", "Ike", "John", "Jack", "Joe", "Larry", "Monte", "Matthew", "Mark", "Nathan", "Otto", "Paul", "Peter", "Roger", "Roger", "Steve", "Thomas", "Tim", "Ty", "Victor", "Walter"]
@@ -242,10 +243,17 @@ function App() {
   
 
   const connectSocket = ()=> {
-    socket.on('chats', data => {
+    socket.on('msgFromServer', data => {
       console.log(data)
+      let newRoomsMessages = JSON.parse(JSON.stringify(roomsMessagesRef.current))
+      newRoomsMessages[data.roomId].push(data.msgData)
+      setRoomsMessages(newRoomsMessages)
     })
   }
+
+  useEffect(() => {
+    roomsMessagesRef.current = roomsMessages
+  }, [roomsMessages])
 
   const authorize = ()=> {
     console.log("called for refresh token")
@@ -313,9 +321,10 @@ function App() {
 
           <DirectAccess setOpenAvailableChats={bool => setOpenAvailableChats(bool)} />
           
-          <Room selectedRoomRecipientName={selectedRoomRecipientName} setSelectedRoomRecipientName={selectedRoomRecipientName => setSelectedRoomRecipientName(selectedRoomRecipientName)} selectedRoom_id={selectedRoom_id} setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)}/>
+          <Room userData={userData} selectedRoomRecipientName={selectedRoomRecipientName} setSelectedRoomRecipientName={selectedRoomRecipientName => setSelectedRoomRecipientName(selectedRoomRecipientName)} selectedRoom_id={selectedRoom_id} setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} roomsMessages={roomsMessages} setRoomsMessages={roomsMessages => setRoomsMessages(roomsMessages)}/>
 
-          <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} email={email} reAuthorizationCheckAndConfig={result => reAuthorizationCheckAndConfig(result)} setContacts={contacts => setContacts(contacts)} setRoomsMessages={rooms => setRoomsMessages(rooms)}/>
+          <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} email={email} reAuthorizationCheckAndConfig={result => reAuthorizationCheckAndConfig(result)} setContacts={contacts => setContacts(contacts)} setRoomsMessages={rooms => setRoomsMessages(rooms)} setUserData={userData =>
+            setUserData(userData)} />
           
           <Block blockStyle={(selectedRoomRecipientName || openAvailableChats) ? { zIndex: 2, opacity: 0.6 } : { zIndex: -2, opacity: 0 }} />
 

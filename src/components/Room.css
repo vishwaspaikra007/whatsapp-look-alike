@@ -25,6 +25,7 @@
     width: 100vw;
     height: 55px;
     background-color: #075e54;
+    position: relative;
 }
 .picContainer {
     height: 55px;
@@ -70,6 +71,7 @@
 }
 .roomHeader > div > i {
     height: 22.5px;
+    position: absolute;
 }
 .create {
     display: grid;
@@ -84,17 +86,28 @@
 .create > .chatInput {
     display: grid;
     grid-template-columns: 40px calc(100vw - 195px) 40px 40px;
-    height: 45px;
+    min-height: 45px;
+    max-height: 120px;
+    overflow: hidden;
     margin: auto;
     width: calc(100% - 5px);
-    border-radius: 50px;
+    border-radius: 22px;
     padding: 0 6px;
     background-color: white;
 }
-.chatInput > input {
+.chatInput i {
+    position: absolute;
+    bottom: 10px;
+} 
+.chatInput > .input {
     border: none;
     outline: none;
     font-size: 17px;
+    text-align: left;
+    padding: 13px 5px;
+    overflow-y: auto;
+    min-height: 45px;
+    max-height: 120px;
 }
 .emoji > i {
     background-image: url("../assets/emoji.svg");
@@ -108,18 +121,57 @@
 .camera > i {
     background-image: url("../assets/camera copy.svg");
 }
-.microphone {
+.microphone, .send {
     border-radius: 50%;
     background: #328b7d;
     width: 45px;
     height: 45px;
     margin: auto;
     padding-top: 2px;
+    position: absolute;
+    right: 1.5%;
+    bottom: 0px;
 }
 .microphone > i {
     background-image: url("../assets/microphone.svg");
     height: 20px;
 
+}
+.send > i {
+    background-image: url('../assets/send.svg');
+    height: 22px;
+}
+.msgBox, .sent {
+    max-width: 80%;
+    text-align: left;
+    padding: 10px;
+    margin: 2px auto;
+    margin-right: 10px;
+    background: palegreen;
+    border-radius: 10px;
+    width: fit-content;
+}
+.received {
+    background: white;
+    margin-right: auto;
+    margin-left: 10px;
+}
+.bot1 {
+    margin-right: auto;
+    margin-left: auto;
+    background: white;
+    transform: scale(0.6);   
+}
+.msgBox > div:nth-last-child(1) {
+    color: gray;
+    margin: auto;
+    margin-right: 10px;
+    width: fit-content;
+    font-size: 13px;
+    margin-top: 5px;
+}
+.messages {
+    overflow: auto;
 }
 /* .chatInput > div > i{
     height: 20px;

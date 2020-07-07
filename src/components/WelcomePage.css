@@ -49,3 +49,21 @@ footer > span {
 .WelcomePage > button {
     max-width: 50vh;
 }
+@media only screen and (max-height: 600px) {
+    .WelcomePage {
+        grid-template-rows: 30px auto 50px 50px 130px;
+    }
+    .WelcomePage > h1 {
+        padding-top: 10px;
+    }
+    .WelcomePage > div > span {
+        width: 100px;
+        height: 100px;
+    }
+    footer {
+        padding-top: 10px;
+    } 
+    .WelcomePage > button {
+        transform: scale(0.8);
+    }
+}
