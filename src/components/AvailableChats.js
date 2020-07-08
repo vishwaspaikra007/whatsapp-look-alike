@@ -17,10 +17,7 @@ export default function AvailableChats(props) {
     const getContactsAddress = props.production ? 'https://vishwas-auth.herokuapp.com/getContacts' : 'http://localhost:3000/getContacts'
 
     const sortAndSetArrayElement = (contact)=> {
-        console.log("contacts", contacts)
-        console.log("contact", contact)
-        setContacts(contacts => contacts.concat(contact).sort((obj1, obj2) => obj1.name < obj2.name))
-        console.log("contacts", contacts)
+        setContacts(contacts.concat(contact).sort((obj1, obj2) => obj1.name < obj2.name))
     }
 
     const saveContact = ()=> {
@@ -39,7 +36,17 @@ export default function AvailableChats(props) {
                         console.log(result)
                         setEmail(undefined)
                         setCreateRoom(false)
+                        const modifiedContact = {
+                            lastMessageData: result.data.msgData,
+                            ...result.data.contact
+                        }
+                        props.setContacts(props.contacts.concat(modifiedContact))
                         sortAndSetArrayElement(result.data.contact)
+
+                        let modifiedRoomsMessages = JSON.parse(JSON.stringify(props.roomsMessages))
+                        modifiedRoomsMessages[result.data.contact.chatRoomId] = [result.data.msgData]
+                        props.setRoomsMessages(modifiedRoomsMessages)
+
                         socket.emit('joinRoom', result.data.contact.chatRoomId)
                         return null
                     }

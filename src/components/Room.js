@@ -15,7 +15,8 @@ export default function Room(props) {
     const MesssagesRef = useRef()
 
     const msgValueRef = useRef("")
-
+    let lastMSGFrom
+    let messageOwnerChanged = false
     useEffect(() => {
         console.log('props.selectedRoom_id', props.selectedRoom_id)
         if(props.selectedRoomRecipientName)
@@ -84,11 +85,13 @@ export default function Room(props) {
             <div ref={MesssagesRef} className={"messages"} style={{height: `calc(100vh - ${offSetForMSGHeight}px)`}}>
                 {
                     props.selectedRoom_id ? props.roomsMessages[props.selectedRoom_id].map((obj, index) => {
+                        messageOwnerChanged = lastMSGFrom === obj.senderId ? false : true
+                        lastMSGFrom = obj.senderId
                         return (
-                            <div key={index} className={['msgBox ', obj.senderId === props.userData._id ? 'sent' : obj.senderId === 'bot1' ? 'bot1' : 'received'].join(' ')}>
+                            <div key={index} className={['msgBox ', obj.senderId === props.userData._id ? 'sent' : obj.senderId === 'bot1' ? 'bot1' : 'received', messageOwnerChanged ? 'marginTop' : null].join(' ')}>
                                 <div>{ReactHtmlParser(obj.msg)}</div>
                                 <div>{formatTime(obj.timestamp)}</div>
-                            </div>
+                            </div> 
                         )
                     }) : null
                 }

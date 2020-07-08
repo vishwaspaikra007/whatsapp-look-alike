@@ -38,7 +38,9 @@ export default function EnterNameAndDp(props) {
         axios.post(registrationAddress, data, { withCredentials: true })
         .then(result => {
             if(result.data.registered) {
+                console.log('registered')
                 props.setAccessJWTTokken(result.data.signedJWT)
+                axios.defaults.headers.common['Authorization'] = "bearer " + result.data.signedJWT
                 setRegistered(result.data.registered)
                 saveUserMetaDataFunc()
             } else {

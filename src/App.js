@@ -297,6 +297,12 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    setContacts(contacts.map(obj => {
+      obj['lastMessageData'] = roomsMessages[obj._id][roomsMessages[obj._id].length - 1]
+      return obj
+    }))
+  }, [roomsMessages])
   return (
     <div className="App">
       
@@ -324,7 +330,7 @@ function App() {
           <Room userData={userData} selectedRoomRecipientName={selectedRoomRecipientName} setSelectedRoomRecipientName={selectedRoomRecipientName => setSelectedRoomRecipientName(selectedRoomRecipientName)} selectedRoom_id={selectedRoom_id} setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} roomsMessages={roomsMessages} setRoomsMessages={roomsMessages => setRoomsMessages(roomsMessages)}/>
 
           <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} email={email} reAuthorizationCheckAndConfig={result => reAuthorizationCheckAndConfig(result)} setContacts={contacts => setContacts(contacts)} setRoomsMessages={rooms => setRoomsMessages(rooms)} setUserData={userData =>
-            setUserData(userData)} />
+            setUserData(userData)} contacts={contacts}  roomsMessages={roomsMessages}/>
           
           <Block blockStyle={(selectedRoomRecipientName || openAvailableChats) ? { zIndex: 2, opacity: 0.6 } : { zIndex: -2, opacity: 0 }} />
 

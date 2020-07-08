@@ -173,6 +173,9 @@
 .messages {
     overflow: auto;
 }
+.messages > .marginTop {
+    margin-top: 5px;
+}
 /* .chatInput > div > i{
     height: 20px;
 } */

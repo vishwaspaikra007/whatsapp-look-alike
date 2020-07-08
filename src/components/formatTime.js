@@ -16,6 +16,7 @@ const formatTime = (timestamp) => {
         let min = new Date(timestamp).getMinutes()
         min = min / 10 >= 1 ? min : '0' + min
         const amOrPm = hrs/12 < 1 ? 'am' : 'pm'
+        hrs = hrs%12
         return (hrs + ':' + min + ' ' + amOrPm)
     }
 }
