@@ -1,0 +1,20 @@
+.circularClickAnimationContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    overflow: hidden;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+.circularBody {
+    width: 80% !important;
+    height: 100% !important;
+    background-color: silver;
+    border-radius: 10px;
+    position: absolute;
+    z-index: 0;
+    display: block !important;
+}

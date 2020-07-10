@@ -51,23 +51,6 @@ function App() {
   const bodyDRef = useRef(bodyRef)
   const changedRef = useRef(true)
   const roomsMessagesRef = useRef()
-  //to generate random names
-
-  let names = ["Adam", "Alex", "Aaron", "Ben", "Carl", "Dan", "David", "Edward", "Fred", "Frank", "George", "Hal", "Hank", "Ike", "John", "Jack", "Joe", "Larry", "Monte", "Matthew", "Mark", "Nathan", "Otto", "Paul", "Peter", "Roger", "Roger", "Steve", "Thomas", "Tim", "Ty", "Victor", "Walter"]
-  let lnames = ["Anderson", "Ashwoon", "Aikin", "Bateman", "Bongard", "Bowers", "Boyd", "Cannon", "Cast", "Deitz", "Dewalt", "Ebner", "Frick", "Hancock", "Haworth", "Hesch", "Hoffman", "Kassing", "Knutson", "Lawless", "Lawicki", "Mccord", "McCormack", "Miller", "Myers", "Nugent", "Ortiz", "Orwig", "Ory"]
-  const randomName = () => {
-    return names[(Math.random() * names.length).toFixed()] + " " + lnames[(Math.random() * lnames.length).toFixed()]
-  }
-  const m = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-  const [namesArr, setNames] = useState([])
-
-  useEffect(() => {
-    let names = []
-    m.map(i => {
-      names.push(randomName())
-    })
-    setNames(names)
-  }, [])
 
   const scrollTo = (i) => {
     bodyDRef.current.style.scrollSnapType = "none"
@@ -319,7 +302,7 @@ function App() {
 
           <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} accessJWTTokken={accessJWTTokken}/>
 
-          <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} names={namesArr} setSelectedRoomRecipientName={selectedRoomRecipientName => setSelectedRoomRecipientName(selectedRoomRecipientName)}  setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} contacts={contacts}/>
+          <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} setSelectedRoomRecipientName={selectedRoomRecipientName => setSelectedRoomRecipientName(selectedRoomRecipientName)}  setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} contacts={contacts}/>
 
           { 
             showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass} /> : null

@@ -34,6 +34,7 @@
     grid-template-columns: 50px auto;
     height: 60px;
     padding-left: 10px;
+    position: relative;
 }
 .contacts > div > div{
     display: grid;
@@ -65,6 +66,9 @@
     background: #14a414;
     border-radius: 50%;
     padding-top: 4px;
+}
+.savedContacts {
+    position: relative;
 }
 .savedContacts > span {
     width: 40px;

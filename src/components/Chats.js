@@ -11,7 +11,7 @@ export default function Chats(props) {
 
     useEffect(()=> {
        props.setchatsRef(chatsRef)
-    },[props.names])
+    },[])
      
     return (
         <div ref={chatsRef} className={"chatsContainer"}>

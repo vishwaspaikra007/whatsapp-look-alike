@@ -1,8 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react'
 import './header.css'
 import axios from 'axios'
+import BackgroundClickAnimation from './BackgroundClickAnimation'
+
 export default function Header(props) {
     const [allowClick, setAllowClick] = useState(false)
+    const [clicked1, setClicked1] = useState(false)
+    const [clicked2, setClicked2] = useState(false)
+    const [clicked3, setClicked3] = useState(false)
     const headerRef = useRef()
     let spanStyle = {
         marginLeft: props.marginLeft + "%",
@@ -38,9 +43,15 @@ export default function Header(props) {
                 </div>
                 <div className="options">
                     <div><i className="icon-camera"></i></div>
-                    <div onClick={() => props.scrollTo(0)}>CHATS</div>
-                    <div onClick={() => props.scrollTo(1)}>STATUS</div>
-                    <div onClick={() => props.scrollTo(2)}>CALLS</div>
+                    <div onClick={() => {props.scrollTo(0); setClicked1(true)}}>CHATS
+                        <BackgroundClickAnimation clicked={clicked1} setClicked={bool => setClicked1(bool)}/>
+                    </div>
+                    <div onClick={() => {props.scrollTo(1); setClicked2(true)}}>STATUS
+                        <BackgroundClickAnimation  clicked={clicked2} setClicked={bool => setClicked2(bool)}/>
+                    </div>
+                    <div onClick={() => {props.scrollTo(2); setClicked3(true)}}>CALLS
+                        <BackgroundClickAnimation  clicked={clicked3} setClicked={bool => setClicked3(bool)}/>
+                    </div>
                 </div>
                 <span className="indicator" style={spanStyle}></span>
             </div>

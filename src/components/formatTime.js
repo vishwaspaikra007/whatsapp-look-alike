@@ -6,7 +6,7 @@ const formatTime = (timestamp) => {
         date = date / 10 >= 1 ? date : '0' + date  
         let month = new Date(timestamp).getMonth()
         month = month / 10 >= 1 ? month : '0' + month  
-        const year = new Date(timestamp).getFullYear()
+        const year = JSON.stringify(new Date(timestamp).getFullYear()).slice(0,2)
         return (`${date}/${month}/${year}`)
     } else if(daysPassed >= 1) {
         return ('Yesterday')

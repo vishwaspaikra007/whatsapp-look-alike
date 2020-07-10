@@ -3,15 +3,16 @@ import axios from 'axios'
 import './Room.css'
 import './AvailableChats.css'
 import {ReactComponent as AddGroup} from '../assets/addGroup.svg'
-import {ReactComponent as Person} from '../assets/person.svg'
 import socket from './socket.io-clientConfig'
+import Contacts from './Contacts'
+import BackgroundClickAnimation from './BackgroundClickAnimation'
 
 export default function AvailableChats(props) {
 
+    const [clicked, setClicked] = useState(false)
     const [email, setEmail] = useState(undefined)
     const [createRoom, setCreateRoom] = useState(false)
     const [contacts, setContacts] = useState([])
-
     const createRoomAddress = props.production ? 'https://vishwas-auth.herokuapp.com/createRoom' : 'http://localhost:3000/createRoom'
 
     const getContactsAddress = props.production ? 'https://vishwas-auth.herokuapp.com/getContacts' : 'http://localhost:3000/getContacts'
@@ -112,7 +113,7 @@ export default function AvailableChats(props) {
                 <div className={"s"} onClick={() => closeAvailableChats()}><i className="return" /></div>
                 <div className="a">
                     <span>Select contact</span>
-                    <span>0 contacts</span>
+                    <span>{contacts.length} contacts</span>
                 </div>
                 <div><i className="icon-search"></i></div>
                 <div><i className="vertical-menu"></i></div>
@@ -122,20 +123,15 @@ export default function AvailableChats(props) {
                     <span><AddGroup className="AddGroup"/></span>
                     <p>New Group</p>
                 </div>
-                <div className="newGroup" onClick={() => setCreateRoom(true)}>
+                <div className="newGroup" onClick={() => {setClicked(true);setCreateRoom(true)}}>
                     <span><AddGroup className="AddGroup"/></span>
                     <p>New Contact</p>
+                    <BackgroundClickAnimation  clicked={clicked} setClicked={boolean => setClicked(boolean)}/>
                 </div>
                 {
                     contacts.map((obj, index) => {
                         return (
-                            <div key={index} className="savedContacts">
-                                <span><Person className="Person"/></span>
-                                <div onClick={() => openChatRoom(obj._id)}>
-                                    <span>{obj.name}</span>
-                                    <span>whatever</span>
-                                </div>
-                            </div>
+                            <Contacts key={index} obj={obj} openChatRoom={id => openChatRoom(id)}/>
                         )
                     })
                 }

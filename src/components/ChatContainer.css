@@ -2,6 +2,7 @@
     height: 80px;
     display: grid;
     grid-template-columns: 80px auto;
+    position: relative;
 }
 .ChatContainer > div, .ChatContainer > a {
     display: grid;

@@ -54,13 +54,14 @@ export default function Room(props) {
             console.log('roomsMessages', roomsMessages)
             props.setRoomsMessages(roomsMessages)
             msgValueRef.current = ""
+            setOffSetForMSGHeight(115)
             MesssagesRef.current.scrollTo(0, MesssagesRef.current.scrollHeight)
         }
     }
 
     useEffect(() => {
         MesssagesRef.current.scrollTo(0, MesssagesRef.current.scrollHeight)
-    }, [props.roomsMessages,x])
+    }, [props.roomsMessages,x,offSetForMSGHeight])
 
     const handleChange = e => {
         msgValueRef.current = e.target.value
