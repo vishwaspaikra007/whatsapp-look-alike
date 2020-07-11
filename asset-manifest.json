@@ -1,17 +1,18 @@
 {
   "files": {
-    "main.css": "/whatsapp-look-alike/static/css/main.71b93dfc.chunk.css",
-    "main.js": "/whatsapp-look-alike/static/js/main.5e16e46f.chunk.js",
-    "main.js.map": "/whatsapp-look-alike/static/js/main.5e16e46f.chunk.js.map",
+    "main.css": "/whatsapp-look-alike/static/css/main.f58393e0.chunk.css",
+    "main.js": "/whatsapp-look-alike/static/js/main.c184c4fe.chunk.js",
+    "main.js.map": "/whatsapp-look-alike/static/js/main.c184c4fe.chunk.js.map",
     "runtime-main.js": "/whatsapp-look-alike/static/js/runtime-main.bfc79f2c.js",
     "runtime-main.js.map": "/whatsapp-look-alike/static/js/runtime-main.bfc79f2c.js.map",
-    "static/js/2.35fedc12.chunk.js": "/whatsapp-look-alike/static/js/2.35fedc12.chunk.js",
-    "static/js/2.35fedc12.chunk.js.map": "/whatsapp-look-alike/static/js/2.35fedc12.chunk.js.map",
+    "static/js/2.64b728ed.chunk.js": "/whatsapp-look-alike/static/js/2.64b728ed.chunk.js",
+    "static/js/2.64b728ed.chunk.js.map": "/whatsapp-look-alike/static/js/2.64b728ed.chunk.js.map",
     "index.html": "/whatsapp-look-alike/index.html",
-    "precache-manifest.078d793f7846bfd00496b129e0c60094.js": "/whatsapp-look-alike/precache-manifest.078d793f7846bfd00496b129e0c60094.js",
+    "precache-manifest.6ad20b592f92585869a99c6c16764c7b.js": "/whatsapp-look-alike/precache-manifest.6ad20b592f92585869a99c6c16764c7b.js",
     "service-worker.js": "/whatsapp-look-alike/service-worker.js",
-    "static/css/main.71b93dfc.chunk.css.map": "/whatsapp-look-alike/static/css/main.71b93dfc.chunk.css.map",
-    "static/js/2.35fedc12.chunk.js.LICENSE.txt": "/whatsapp-look-alike/static/js/2.35fedc12.chunk.js.LICENSE.txt",
+    "static/css/main.f58393e0.chunk.css.map": "/whatsapp-look-alike/static/css/main.f58393e0.chunk.css.map",
+    "static/js/2.64b728ed.chunk.js.LICENSE.txt": "/whatsapp-look-alike/static/js/2.64b728ed.chunk.js.LICENSE.txt",
+    "static/media/WelcomePage.css": "/whatsapp-look-alike/static/media/WelcomeBg.f32f1158.jpg",
     "static/media/addGroup.ba736b1e.svg": "/whatsapp-look-alike/static/media/addGroup.ba736b1e.svg",
     "static/media/Room.css": "/whatsapp-look-alike/static/media/video-call.24d6b35c.svg",
     "static/media/header.css": "/whatsapp-look-alike/static/media/vertical-menu.e8af6707.svg",
@@ -20,8 +21,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.bfc79f2c.js",
-    "static/js/2.35fedc12.chunk.js",
-    "static/css/main.71b93dfc.chunk.css",
-    "static/js/main.5e16e46f.chunk.js"
+    "static/js/2.64b728ed.chunk.js",
+    "static/css/main.f58393e0.chunk.css",
+    "static/js/main.c184c4fe.chunk.js"
   ]
 }
