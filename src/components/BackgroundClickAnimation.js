@@ -24,7 +24,7 @@ export default function BackgroundClickAnimation(props) {
         return ans
     }
     useEffect(() => {
-        console.log(currentStyle)
+        // console.log(currentStyle)
         if(isObjectSame(currentStyle, initialValue))
             setTimeout(() => {
                 setCurrentStyle(finalValue)

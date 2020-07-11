@@ -23,9 +23,6 @@ function App() {
   const [chatsRefForBody, setchatsRefForBody] = useState()
   const [marginTop, setMarginTop] = useState(0)
   const [headerRef, setHeaderRef] = useState()
-  const [passedFromStatus, setPassedFromStatus] = useState(false)
-  const [passedFromCalls, setPassedFromCalls] = useState(false)
-  const [clickedFromApp, setClickedFromApp] = useState(true)
   const [agreed, setAgreed] = useState(false)
   const [registered, setRegistered] = useState(false)
   const [accessJWTTokken, setAccessJWTTokken] = useState(undefined)
@@ -42,14 +39,10 @@ function App() {
   const [contacts, setContacts] = useState([])
   const [roomsMessages, setRoomsMessages] = useState([])
 
-  const clickedFromAppRef = useRef(clickedFromApp)
-  const passedFromCallsRef = useRef(passedFromCalls)
-  const passedFromStatusRef = useRef(passedFromStatus)
   const openAvailableChatsRef = useRef(openAvailableChats)
   const selectedRoomRecipientNameRef = useRef(selectedRoomRecipientName)
   let history = createBrowserHistory()
   const bodyDRef = useRef(bodyRef)
-  const changedRef = useRef(true)
   const roomsMessagesRef = useRef()
 
   const scrollTo = (i) => {
@@ -74,8 +67,6 @@ function App() {
           clearInterval(scrollAnime)
           bodyDRef.current.style.scrollSnapType = "x mandatory"
           if (bodyDRef.current.scrollLeft == 0) {
-            setPassedFromCalls(false)
-            setPassedFromStatus(false)
           }
         }
       }, 1);
@@ -84,45 +75,40 @@ function App() {
 
   }
   useEffect(() => {
+
     if (bodyDRef.current) {
 
-      if (!passedFromStatusRef.current && Math.round(bodyDRef.current.scrollLeft) == Math.round(document.documentElement.clientWidth)) {
-        setClickedFromApp(true)
-        setPassedFromStatus(true)
-        changedRef.current = false
+      const scrollLeft = Math.round(bodyDRef.current.scrollLeft)
+      const clientWidth = Math.round(document.documentElement.clientWidth)
+      const pathname = window.location.pathname
 
-        if (passedFromCallsRef.current) {
-          window.history.back()
-          setPassedFromCalls(false)
-        }
-        setTimeout(() => {
+      if (scrollLeft == clientWidth && pathname != 'status') {
+
+        console.log('status')
+        if (window.location.pathname == '/whatsapp-look-alike') {
           history.push("/status")
-          setClickedFromApp(false)
-        }, 10);
-      }
-      else if (!passedFromCallsRef.current && Math.round(bodyDRef.current.scrollLeft) == Math.round(document.documentElement.clientWidth * 2)) {
-        setClickedFromApp(true)
-        setPassedFromCalls(true)
-        changedRef.current = false
+        } else {
+          history.replace('/status')
+        }
 
-        if (passedFromStatusRef.current) {
-          window.history.back()
-          setPassedFromStatus(false)
-        }
-        setTimeout(() => {
-          history.push("/calls")
-          setClickedFromApp(false)
-        }, 10);
       }
-      else if (Math.round(bodyDRef.current.scrollLeft) == 0) {
-        if (!changedRef.current && (passedFromCallsRef.current || passedFromStatusRef.current)) {
-          window.history.back()
+      else if (scrollLeft == clientWidth * 2 && pathname !== 'calls') {
+
+        console.log('calls')
+        if (window.location.pathname == '/whatsapp-look-alike') {
+          history.push("/calls")
+        } else {
+          history.replace('/calls')
         }
-        setPassedFromCalls(false)
-        setPassedFromStatus(false)
+      }
+      else if (scrollLeft == 0 && pathname != 'whatsapp-look-alike') {
+        console.log("chats")
+        if (window.location.pathname !== '/whatsapp-look-alike') {
+          history.goBack()
+        }
       }
     }
-  }, [scrollX, bodyDRef, marginLeft])
+  }, [marginLeft])
 
   useEffect(() => {
     if (bodyRef)
@@ -203,29 +189,23 @@ function App() {
 
   useEffect(() => {
     window.addEventListener('popstate', () => {
+      console.log(window.location.pathname)
       let a = !(openAvailableChatsRef.current || selectedRoomRecipientNameRef.current)
-      // let b = 
-      if (!clickedFromAppRef.current && a) {
+      if (window.location.pathname == '/whatsapp-look-alike' && a) {
         scrollTo(0)
-        changedRef.current = true
-        // setMarginLeft(10)
       }
-      setClickedFromApp(false)
       setSelectedRoomRecipientName(undefined)
       setOpenAvailableChats(false)
     })
   }, [])
 
   useEffect(() => {
-    clickedFromAppRef.current = clickedFromApp
-    passedFromStatusRef.current = passedFromStatus
-    passedFromCallsRef.current = passedFromCalls
     openAvailableChatsRef.current = openAvailableChats
     selectedRoomRecipientNameRef.current = selectedRoomRecipientName
-  }, [clickedFromApp, passedFromCalls, passedFromStatus, selectedRoomRecipientName, openAvailableChats])
-  
+  }, [selectedRoomRecipientName, openAvailableChats])
 
-  const connectSocket = ()=> {
+
+  const connectSocket = () => {
     socket.on('msgFromServer', data => {
       console.log(data)
       let newRoomsMessages = JSON.parse(JSON.stringify(roomsMessagesRef.current))
@@ -238,13 +218,13 @@ function App() {
     roomsMessagesRef.current = roomsMessages
   }, [roomsMessages])
 
-  const authorize = ()=> {
+  const authorize = () => {
     console.log("called for refresh token")
     const authorizeAddress = production ? 'https://vishwas-auth.herokuapp.com/refreshToken' : 'http://localhost:3000/refreshToken'
     axios.get(authorizeAddress, { withCredentials: true })
       .then(result => {
         console.log("called for refresh token")
-        if(result.data.logedIn) {
+        if (result.data.logedIn) {
           console.log("logged in")
           setAccessJWTTokken(result.data.signedJWT)
           setEmail(result.data.email)
@@ -259,22 +239,21 @@ function App() {
         console.log(err + " login again")
       ])
   }
-  
+
   useEffect(() => {
     authorize()
   }, [])
 
-  const reAuthorizationCheckAndConfig = (result)=> {
-    if(result.data.logedIn === true)
-    {
-        setAccessJWTTokken(result.data.signedJWT)
-        return true
+  const reAuthorizationCheckAndConfig = (result) => {
+    if (result.data.logedIn === true) {
+      setAccessJWTTokken(result.data.signedJWT)
+      return true
     } else if (result.data.logedIn === false) {
-        alert(result.data.msg)
-        setEmail(undefined)
-        setPWD(undefined)
-        setAccessJWTTokken(undefined)
-        setRegistered(false)
+      alert(result.data.msg)
+      setEmail(undefined)
+      setPWD(undefined)
+      setAccessJWTTokken(undefined)
+      setRegistered(false)
     } else {
       return false
     }
@@ -288,36 +267,36 @@ function App() {
   }, [roomsMessages])
   return (
     <div className="App">
-      
+
       {agreed ? <React.Fragment>
-          {(email && PWD) ? 
-            <React.Fragment>
-              {registered  && accessJWTTokken ? null : <EnterNameAndDp accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} production={production} setRegistered={registered => setRegistered(registered)}  email={email} PWD={PWD} setPWD={pwd => setPWD(pwd)}/>}
-            </React.Fragment>
-           : <EnterEmail  accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} registered={registered} setRegistered={registered => setRegistered(registered)} setEmail={email => setEmail(email)} setPWD={PWD => setPWD(PWD)}/>}
-        </React.Fragment>
-       : <WelcomePage setAgreed={agreed => setAgreed(agreed)}/>}
-      
+        {(email && PWD) ?
+          <React.Fragment>
+            {registered && accessJWTTokken ? null : <EnterNameAndDp accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} production={production} setRegistered={registered => setRegistered(registered)} email={email} PWD={PWD} setPWD={pwd => setPWD(pwd)} />}
+          </React.Fragment>
+          : <EnterEmail accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} registered={registered} setRegistered={registered => setRegistered(registered)} setEmail={email => setEmail(email)} setPWD={PWD => setPWD(PWD)} />}
+      </React.Fragment>
+        : <WelcomePage setAgreed={agreed => setAgreed(agreed)} />}
+
       {registered && accessJWTTokken ? <React.Fragment>
 
-          <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} accessJWTTokken={accessJWTTokken}/>
+        <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} accessJWTTokken={accessJWTTokken} />
 
-          <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} setSelectedRoomRecipientName={selectedRoomRecipientName => setSelectedRoomRecipientName(selectedRoomRecipientName)}  setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} contacts={contacts}/>
+        <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} setSelectedRoomRecipientName={selectedRoomRecipientName => setSelectedRoomRecipientName(selectedRoomRecipientName)} setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} contacts={contacts} />
 
-          { 
-            showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass} /> : null
-          }
+        {
+          showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass} /> : null
+        }
 
-          <DirectAccess setOpenAvailableChats={bool => setOpenAvailableChats(bool)} />
-          
-          <Room userData={userData} selectedRoomRecipientName={selectedRoomRecipientName} setSelectedRoomRecipientName={selectedRoomRecipientName => setSelectedRoomRecipientName(selectedRoomRecipientName)} selectedRoom_id={selectedRoom_id} setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} roomsMessages={roomsMessages} setRoomsMessages={roomsMessages => setRoomsMessages(roomsMessages)}/>
+        <DirectAccess setOpenAvailableChats={bool => setOpenAvailableChats(bool)} />
 
-          <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} email={email} reAuthorizationCheckAndConfig={result => reAuthorizationCheckAndConfig(result)} setContacts={contacts => setContacts(contacts)} setRoomsMessages={rooms => setRoomsMessages(rooms)} setUserData={userData =>
-            setUserData(userData)} contacts={contacts}  roomsMessages={roomsMessages}/>
-          
-          <Block blockStyle={(selectedRoomRecipientName || openAvailableChats) ? { zIndex: 2, opacity: 0.6 } : { zIndex: -2, opacity: 0 }} />
+        <Room userData={userData} selectedRoomRecipientName={selectedRoomRecipientName} setSelectedRoomRecipientName={selectedRoomRecipientName => setSelectedRoomRecipientName(selectedRoomRecipientName)} selectedRoom_id={selectedRoom_id} setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} roomsMessages={roomsMessages} setRoomsMessages={roomsMessages => setRoomsMessages(roomsMessages)} />
 
-        </React.Fragment> : null
+        <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} email={email} reAuthorizationCheckAndConfig={result => reAuthorizationCheckAndConfig(result)} setContacts={contacts => setContacts(contacts)} setRoomsMessages={rooms => setRoomsMessages(rooms)} setUserData={userData =>
+          setUserData(userData)} contacts={contacts} roomsMessages={roomsMessages} />
+
+        <Block blockStyle={(selectedRoomRecipientName || openAvailableChats) ? { zIndex: 2, opacity: 0.6 } : { zIndex: -2, opacity: 0 }} />
+
+      </React.Fragment> : null
       }
 
     </div>

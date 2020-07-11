@@ -129,7 +129,7 @@
     margin: auto;
     padding-top: 2px;
     position: absolute;
-    right: 1.5%;
+    left: calc(100vw - 50px);
     bottom: 0px;
 }
 .microphone > i {
