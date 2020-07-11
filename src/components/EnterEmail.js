@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import './EnterEmail.css'
 import './Button.css'
+import config from './config'
 
 export default function EnterEmail(props) {
     const [email, setEmail] = useState(null)
@@ -17,11 +18,11 @@ export default function EnterEmail(props) {
     const PWDConfirmRef = useRef()
     const requestOTP = () => {
         setDisabled(true)
-        const requestMailAddress = props.production ? 'https://vishwas-auth.herokuapp.com/requestMail' : 'http://localhost:3000/requestMail'
+        const requestMailAddress = config.production ? 'https://vishwas-auth.herokuapp.com/requestMail' : 'http://localhost:3000/requestMail'
 
-        const verifyOTPAddress = props.production ? 'https://vishwas-auth.herokuapp.com/verifyOTP' : 'http://localhost:3000/verifyOTP'
+        const verifyOTPAddress = config.production ? 'https://vishwas-auth.herokuapp.com/verifyOTP' : 'http://localhost:3000/verifyOTP'
 
-        const loginAddress = props.production ? 'https://vishwas-auth.herokuapp.com/login' : 'http://localhost:3000/login'
+        const loginAddress = config.production ? 'https://vishwas-auth.herokuapp.com/login' : 'http://localhost:3000/login'
 
         let data = {}
         data.to = email

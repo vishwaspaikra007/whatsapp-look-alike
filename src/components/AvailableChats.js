@@ -6,6 +6,7 @@ import {ReactComponent as AddGroup} from '../assets/addGroup.svg'
 import socket from './socket.io-clientConfig'
 import Contacts from './Contacts'
 import BackgroundClickAnimation from './BackgroundClickAnimation'
+import config from './config'
 
 export default function AvailableChats(props) {
 
@@ -13,9 +14,9 @@ export default function AvailableChats(props) {
     const [email, setEmail] = useState(undefined)
     const [createRoom, setCreateRoom] = useState(false)
     const [contacts, setContacts] = useState([])
-    const createRoomAddress = props.production ? 'https://vishwas-auth.herokuapp.com/createRoom' : 'http://localhost:3000/createRoom'
+    const createRoomAddress = config.production ? 'https://vishwas-auth.herokuapp.com/createRoom' : 'http://localhost:3000/createRoom'
 
-    const getContactsAddress = props.production ? 'https://vishwas-auth.herokuapp.com/getContacts' : 'http://localhost:3000/getContacts'
+    const getContactsAddress = config.production ? 'https://vishwas-auth.herokuapp.com/getContacts' : 'http://localhost:3000/getContacts'
 
     const sortAndSetArrayElement = (contact)=> {
         setContacts(contacts.concat(contact).sort((obj1, obj2) => obj1.name < obj2.name))

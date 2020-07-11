@@ -2,15 +2,16 @@ import React, {useEffect, useState, useRef} from 'react'
 import axios from 'axios'
 import './EnterNameAndDp.css'
 import './EnterEmail.css'
+import config from './config'
 
 export default function EnterNameAndDp(props) {
     const [name, setName] = useState(undefined)
     const [disabled, setDisabled] = useState(false)
     const [registered, setRegistered] = useState(false)
     
-    const registrationAddress = props.production ? 'https://vishwas-auth.herokuapp.com/register' : 'http://localhost:3000/register'
+    const registrationAddress = config.production ? 'https://vishwas-auth.herokuapp.com/register' : 'http://localhost:3000/register'
 
-    const saveUserMetaDataAddress = props.production ? 'https://vishwas-auth.herokuapp.com/saveUserMetaData' : 'http://localhost:3000/saveUserMetaData'
+    const saveUserMetaDataAddress = config.production ? 'https://vishwas-auth.herokuapp.com/saveUserMetaData' : 'http://localhost:3000/saveUserMetaData'
     const enterNameRef = useRef()
     let data = {}
 
