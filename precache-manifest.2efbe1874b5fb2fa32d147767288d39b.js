@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "f3b96193a222f58395b831a5f7f4ccbf",
+    "revision": "345045f6cf3774d0d59a9a6f6c1dc20d",
     "url": "/whatsapp-look-alike/index.html"
   },
   {
-    "revision": "45674571b41af1777b1f",
+    "revision": "2e0a7fc7c35588f2feaa",
     "url": "/whatsapp-look-alike/static/css/main.f58393e0.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/whatsapp-look-alike/static/js/2.64b728ed.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "45674571b41af1777b1f",
-    "url": "/whatsapp-look-alike/static/js/main.c184c4fe.chunk.js"
+    "revision": "2e0a7fc7c35588f2feaa",
+    "url": "/whatsapp-look-alike/static/js/main.48c53871.chunk.js"
   },
   {
     "revision": "de73dd5e81ddfc0b99b0",
