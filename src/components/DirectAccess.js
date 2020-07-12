@@ -7,7 +7,7 @@ import './DirectAccess.css'
 export default function DirectAccess(props) {
     return (
         <Router>
-            <Link to="/select-contact-for-chatting"  className="directAccess">
+            <Link to="/whatsapp-look-alike/select-contact-for-chatting"  className="directAccess">
                 <CreateChat className="createChat" onClick={() => props.setOpenAvailableChats(true)}/>
             </Link>
         </Router>

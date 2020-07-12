@@ -13,6 +13,8 @@ import WelcomePage from './components/WelcomePage';
 import EnterEmail from './components/EnterEmail';
 import EnterNameAndDp from './components/EnterNameAndDp';
 import socket from './components/socket.io-clientConfig'
+import config from './components/config'
+
 function App() {
 
   const [bodyRef, setBodyRef] = useState(null)
@@ -26,7 +28,6 @@ function App() {
   const [agreed, setAgreed] = useState(false)
   const [registered, setRegistered] = useState(false)
   const [accessJWTTokken, setAccessJWTTokken] = useState(undefined)
-  const [production, setProduction] = useState(false)
   //to send open room chat data
   const [selectedRoomRecipientName, setSelectedRoomRecipientName] = useState(undefined)
   const [selectedRoom_id, setSelectedRoom_id] = useState(undefined)
@@ -44,7 +45,8 @@ function App() {
   let history = createBrowserHistory()
   const bodyDRef = useRef(bodyRef)
   const roomsMessagesRef = useRef()
-
+  const isURLSet = useRef(false)
+  
   const scrollTo = (i) => {
     bodyDRef.current.style.scrollSnapType = "none"
     let scrollAnime;
@@ -81,31 +83,30 @@ function App() {
       const scrollLeft = Math.round(bodyDRef.current.scrollLeft)
       const clientWidth = Math.round(document.documentElement.clientWidth)
       const pathname = window.location.pathname
+      const isRootPath = pathname.match('whatsapp-look-alike/chats')
 
-      if (scrollLeft == clientWidth && pathname != 'status') {
+      if (scrollLeft == clientWidth && !pathname.match('status')) {
 
         console.log('status')
-        if (window.location.pathname == '/whatsapp-look-alike') {
-          history.push("/status")
+        if (isRootPath) {
+          history.push("/whatsapp-look-alike/status")
         } else {
-          history.replace('/status')
+          history.replace('/whatsapp-look-alike/status')
         }
 
       }
-      else if (scrollLeft == clientWidth * 2 && pathname !== 'calls') {
+      else if (scrollLeft == clientWidth * 2 && !pathname.match('calls')) {
 
         console.log('calls')
-        if (window.location.pathname == '/whatsapp-look-alike') {
-          history.push("/calls")
+        if (isRootPath) {
+          history.push("/whatsapp-look-alike/calls")
         } else {
-          history.replace('/calls')
+          history.replace('/whatsapp-look-alike/calls')
         }
       }
-      else if (scrollLeft == 0 && pathname != 'whatsapp-look-alike') {
+      else if (scrollLeft == 0 && !isRootPath) {
         console.log("chats")
-        if (window.location.pathname !== '/whatsapp-look-alike') {
-          history.goBack()
-        }
+        history.goBack()
       }
     }
   }, [marginLeft])
@@ -186,12 +187,53 @@ function App() {
     }
   }, [selectedRoomRecipientName, openAvailableChats])
 
+  const checkURLAndSetAppState = ()=> {
+    isURLSet.current = true
+    let isReloaded
+    if (window.performance) {
+      console.info("window.performance works fine on this browser");
+      isReloaded =  (performance.navigation.type == 1) ? true : false
+      console.log("reloaded ", isReloaded)
+    }
+
+    const pathname = window.location.pathname
+    if(pathname.match(/whatsapp-look-alike\/*$/))
+      history.replace('/whatsapp-look-alike/chats')
+    else if(pathname.match(/whatsapp-look-alike\/status\/*$/)) {
+      scrollTo(1)
+      if(!isReloaded) {
+        history.replace('/whatsapp-look-alike/chats')
+        history.push('/whatsapp-look-alike/status')
+      }
+    } else if(pathname.match(/whatsapp-look-alike\/calls\/*$/)) {
+      scrollTo(2)
+      if(!isReloaded) {
+        history.replace('/whatsapp-look-alike/chats')
+        history.push('/whatsapp-look-alike/calls')
+      }
+    } else if(pathname.match(/whatsapp-look-alike\/select-contact-for-chatting\/*$/)) {
+      setOpenAvailableChats(true)
+      if(!isReloaded) {
+        history.replace('/whatsapp-look-alike/chats')
+        history.push('/whatsapp-look-alike/select-contact-for-chatting')
+      }
+    } else if(!pathname.match(/whatsapp-look-alike\/chats\/*$/) || pathname.match(/whatsapp-look-alike\/*/g).length > 1)
+    {
+      isReloaded ? history.goBack() : history.replace('/whatsapp-look-alike/chats')
+    }
+    console.log("if page is loading continuosly than write the folowing path after url 'whatsapp-look-alike/chats'")
+  }
+
+  useEffect(() => {
+    if(bodyDRef.current && !isURLSet.current)
+      checkURLAndSetAppState()
+  }, [bodyDRef.current])
 
   useEffect(() => {
     window.addEventListener('popstate', () => {
       console.log(window.location.pathname)
       let a = !(openAvailableChatsRef.current || selectedRoomRecipientNameRef.current)
-      if (window.location.pathname == '/whatsapp-look-alike' && a) {
+      if (window.location.pathname.match('whatsapp-look-alike/chats') && a) {
         scrollTo(0)
       }
       setSelectedRoomRecipientName(undefined)
@@ -220,7 +262,7 @@ function App() {
 
   const authorize = () => {
     console.log("called for refresh token")
-    const authorizeAddress = production ? 'https://vishwas-auth.herokuapp.com/refreshToken' : 'http://localhost:3000/refreshToken'
+    const authorizeAddress = config.production ? 'https://vishwas-auth.herokuapp.com/refreshToken' : 'http://localhost:3000/refreshToken'
     axios.get(authorizeAddress, { withCredentials: true })
       .then(result => {
         console.log("called for refresh token")
@@ -271,7 +313,7 @@ function App() {
       {agreed ? <React.Fragment>
         {(email && PWD) ?
           <React.Fragment>
-            {registered && accessJWTTokken ? null : <EnterNameAndDp accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} production={production} setRegistered={registered => setRegistered(registered)} email={email} PWD={PWD} setPWD={pwd => setPWD(pwd)} />}
+            {registered && accessJWTTokken ? null : <EnterNameAndDp accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} setRegistered={registered => setRegistered(registered)} email={email} PWD={PWD} setPWD={pwd => setPWD(pwd)} />}
           </React.Fragment>
           : <EnterEmail accessJWTTokken={accessJWTTokken} setAccessJWTTokken={accessJWTTokken => setAccessJWTTokken(accessJWTTokken)} registered={registered} setRegistered={registered => setRegistered(registered)} setEmail={email => setEmail(email)} setPWD={PWD => setPWD(PWD)} />}
       </React.Fragment>

@@ -13,7 +13,7 @@ export default function Room(props) {
     const [offSetForMSGHeight, setOffSetForMSGHeight] = useState(115)
     const inputRef = useRef()
     const MesssagesRef = useRef()
-
+    const contentEditableRef = useRef()
     const msgValueRef = useRef("")
     let lastMSGFrom
     let messageOwnerChanged = false
@@ -37,6 +37,10 @@ export default function Room(props) {
         window.history.back()
     }
 
+    const lastMSGIntoView = () => {
+        if(MesssagesRef.current)
+            MesssagesRef.current.scrollTo(0, MesssagesRef.current.scrollHeight)
+    }
     const sendMSG = ()=> {
         if(props.selectedRoom_id) {
             let msgData = {
@@ -55,12 +59,13 @@ export default function Room(props) {
             props.setRoomsMessages(roomsMessages)
             msgValueRef.current = ""
             setOffSetForMSGHeight(115)
-            MesssagesRef.current.scrollTo(0, MesssagesRef.current.scrollHeight)
+            lastMSGIntoView()
+            contentEditableRef.current.focus()
         }
     }
 
     useEffect(() => {
-        MesssagesRef.current.scrollTo(0, MesssagesRef.current.scrollHeight)
+        lastMSGIntoView()
     }, [props.roomsMessages,x,offSetForMSGHeight])
 
     const handleChange = e => {
@@ -101,7 +106,9 @@ export default function Room(props) {
         <div ref={inputRef} className={"create"} style={{transform: `translate(${createX}%,0px)`}}>
             <div className="chatInput">
                 <div className="emoji"><i /></div>
-                <ContentEditable className="input" html={msgValueRef.current} onChange={handleChange}></ContentEditable>
+                <ContentEditable innerRef={contentEditableRef} className="input" html={msgValueRef.current} onChange={handleChange} onFocus={() => {setTimeout(() => {
+                    lastMSGIntoView()
+                }, 1000);}}></ContentEditable>
                 <div className="attachment"><i /></div>
                 <div className="camera"><i /></div>
             </div>
