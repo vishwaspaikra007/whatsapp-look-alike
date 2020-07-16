@@ -38,18 +38,15 @@ export default function AvailableChats(props) {
                         console.log(result)
                         setEmail(undefined)
                         setCreateRoom(false)
-                        const modifiedContact = {
-                            lastMessageData: result.data.msgData,
-                            ...result.data.contact
-                        }
-                        props.setContacts(props.contacts.concat(modifiedContact))
+                        
+                        props.setContacts(props.contacts.concat(result.data.contact))
                         sortAndSetArrayElement(result.data.contact)
 
                         let modifiedRoomsMessages = JSON.parse(JSON.stringify(props.roomsMessages))
-                        modifiedRoomsMessages[result.data.contact.chatRoomId] = [result.data.msgData]
+                        modifiedRoomsMessages[result.data.contact._id] = [result.data.contact.lastMessageData]
                         props.setRoomsMessages(modifiedRoomsMessages)
 
-                        socket.emit('joinRoom', result.data.contact.chatRoomId)
+                        socket.emit('joinRoom', result.data.contact._id)
                         return null
                     }
                     alert(result.data.msg)

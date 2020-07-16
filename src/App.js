@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createBrowserHistory } from 'history'
 import axios from 'axios'
 import './App.css';
+import SocketConnections from './components/SocketConnections'
 import Header from './components/header'
 import Body from './components/Body';
 import MenuContainer from './components/MenuContainer';
@@ -45,6 +46,7 @@ function App() {
   let history = createBrowserHistory()
   const bodyDRef = useRef(bodyRef)
   const roomsMessagesRef = useRef()
+  const contactsRef = useRef()
   const isURLSet = useRef(false)
   
   const scrollTo = (i) => {
@@ -260,6 +262,10 @@ function App() {
     roomsMessagesRef.current = roomsMessages
   }, [roomsMessages])
 
+  useEffect(() => {
+    contactsRef.current = contacts
+  }, [contacts])
+
   const authorize = () => {
     console.log("called for refresh token")
     const authorizeAddress = config.production ? 'https://vishwas-auth.herokuapp.com/refreshToken' : 'http://localhost:3000/refreshToken'
@@ -320,6 +326,8 @@ function App() {
         : <WelcomePage setAgreed={agreed => setAgreed(agreed)} />}
 
       {registered && accessJWTTokken ? <React.Fragment>
+
+        <SocketConnections roomsMessagesRef={roomsMessagesRef} setRoomsMessages={roomsMessages => setRoomsMessages(roomsMessages)} email={email} contactsRef={contactsRef} setContacts={contacts => setContacts(contacts)}/>
 
         <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} accessJWTTokken={accessJWTTokken} />
 
