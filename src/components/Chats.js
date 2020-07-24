@@ -17,7 +17,7 @@ export default function Chats(props) {
         <div ref={chatsRef} className={"chatsContainer"}>
             {
                 props.contacts.map((obj, index) => {
-                    return (<ChatContainer key={index} roomId={obj._id} name={obj.name} date={obj.lastMessageData.timestamp} lastMessage={obj.lastMessageData.msg} setSelectedRoomRecipientName={selectedRoomRecipientName => props.setSelectedRoomRecipientName(selectedRoomRecipientName)}  setSelectedRoom_id={selectedRoom_id => props.setSelectedRoom_id(selectedRoom_id)}/>)
+                    return (<ChatContainer key={index} roomId={obj._id} name={obj.name} email={obj.email} date={obj.lastMessageData.timestamp} lastMessage={obj.lastMessageData.msg} setselectedRoomRecipientData={selectedRoomRecipientData => props.setselectedRoomRecipientData(selectedRoomRecipientData)}  setSelectedRoom_id={selectedRoom_id => props.setSelectedRoom_id(selectedRoom_id)}/>)
                 })
             }
             <div>Tap and hold on chat for more option</div>

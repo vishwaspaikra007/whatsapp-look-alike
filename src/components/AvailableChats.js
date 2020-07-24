@@ -42,8 +42,8 @@ export default function AvailableChats(props) {
                         props.setContacts(props.contacts.concat(result.data.contact))
                         sortAndSetArrayElement(result.data.contact)
 
-                        let modifiedRoomsMessages = JSON.parse(JSON.stringify(props.roomsMessages))
-                        modifiedRoomsMessages[result.data.contact._id] = [result.data.contact.lastMessageData]
+                        let modifiedRoomsMessages =  JSON.parse(JSON.stringify(props.roomsMessages))
+                        modifiedRoomsMessages[result.data.contact._id].list = [result.data.contact.lastMessageData]
                         props.setRoomsMessages(modifiedRoomsMessages)
 
                         socket.emit('joinRoom', result.data.contact._id)
@@ -82,13 +82,31 @@ export default function AvailableChats(props) {
             const {contacts, roomsMessages} = result.data
             console.log("get contacts", result)
             setContacts(contacts)
+
+            const modifiedRoomsMessages = {}
+
             let modifiedContacts = contacts.map(obj => {
+
+                modifiedRoomsMessages[obj._id] = {
+                    seen: obj.seen,
+                    received: obj.received,
+                    sent: obj.sent,
+                    list: roomsMessages[obj._id]
+                }
+
                 obj['lastMessageData'] = roomsMessages[obj._id][roomsMessages[obj._id].length - 1]
+
+                if(!obj.seen || obj.lastMessageData.timestamp > obj.seen)
+                    socket.emit('msgStatusToServer',{roomId: obj._id, senderEmail: obj.email, type: 'received', timestamp: Date.now()})
+
                 return obj
             })
             console.log('modifiedContacts', modifiedContacts)
+            // props.setMsgStatus(objectForMsgStatus)
             props.setContacts(modifiedContacts)
-            props.setRoomsMessages(result.data.roomsMessages)
+            
+            // modifiedRoomsMessages.list = result.data.roomsMessages 
+            props.setRoomsMessages(modifiedRoomsMessages)
             props.setUserData(result.data.userData)
             contacts.map(obj => {
                 socket.emit('joinRoom',obj._id)

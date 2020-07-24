@@ -18,7 +18,7 @@ export default function ChatContainer(props) {
         <div className="ChatContainer">
             <ProfilePic />
             <Router> 
-                <Link to={"/whatsapp-look-alike/" + (props.name).replace(new RegExp(' ', 'g'), "-")}  onClick={() => {props.setSelectedRoomRecipientName(props.name); props.setSelectedRoom_id(props.roomId);setClicked(true)}}>
+                <Link to={"/whatsapp-look-alike/" + (props.name).replace(new RegExp(' ', 'g'), "-")}  onClick={() => {props.setselectedRoomRecipientData({name: props.name, email: props.email}); props.setSelectedRoom_id(props.roomId);setClicked(true)}}>
                     <div>
                         <div className="name">{props.name}</div>
                         <div className="date">{date}</div>

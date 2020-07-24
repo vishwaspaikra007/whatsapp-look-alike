@@ -5,21 +5,25 @@ import socket from './socket.io-clientConfig'
 import ContentEditable from 'react-contenteditable'
 import formatTime from './formatTime'
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser'
+import MsgBox from './MsgBox'
 
 export default function Room(props) {
     const [x, setX] = useState(100)
     const [createX, setCreateX] = useState(100)
     const [inputHeight, setInputHeight] = useState("60px")
     const [offSetForMSGHeight, setOffSetForMSGHeight] = useState(115)
+    // const [msgStatus, setMsgStatus] = useState({})
+
     const inputRef = useRef()
     const MesssagesRef = useRef()
     const contentEditableRef = useRef()
     const msgValueRef = useRef("")
     let lastMSGFrom
     let messageOwnerChanged = false
+
     useEffect(() => {
         console.log('props.selectedRoom_id', props.selectedRoom_id)
-        if(props.selectedRoomRecipientName)
+        if(props.selectedRoomRecipientData)
         {    
             setX(0)
             setCreateX(0)
@@ -29,11 +33,11 @@ export default function Room(props) {
             setX(100)
             setCreateX(100)
         }
-    }, [props.selectedRoomRecipientName])
+    }, [props.selectedRoomRecipientData])
 
     const goBack =()=> {
-        props.setSelectedRoomRecipientName(undefined)
         props.setSelectedRoom_id(undefined)
+        props.setselectedRoomRecipientData(undefined)
         window.history.back()
     }
 
@@ -51,10 +55,12 @@ export default function Room(props) {
                 }
             socket.emit('msgToServer', {
                 msgData,
-                roomId: props.selectedRoom_id
+                roomId: props.selectedRoom_id,
+                receiverEmail: props.selectedRoomRecipientData.email,
+                senderEmail: props.userData.email
             })
             let roomsMessages = JSON.parse(JSON.stringify(props.roomsMessages))
-            roomsMessages[props.selectedRoom_id].push(msgData)
+            roomsMessages[props.selectedRoom_id].list.push(msgData)
             console.log('roomsMessages', roomsMessages)
             props.setRoomsMessages(roomsMessages)
             msgValueRef.current = ""
@@ -74,6 +80,14 @@ export default function Room(props) {
         setInputHeight(inputRef.current.clientHeight + 15 + "px")
         setOffSetForMSGHeight(inputRef.current.clientHeight + 70)
     }
+
+    useEffect(() => {
+        if(props.selectedRoom_id)
+        console.log("from room",props.roomsMessages[props.selectedRoom_id].list.slice(-1)[0].senderId)
+        if(props.selectedRoom_id && props.roomsMessages[props.selectedRoom_id].list.slice(-1)[0].senderId != props.userData._id)
+            socket.emit('msgStatusToServer',{roomId: props.selectedRoom_id, senderEmail: props.selectedRoomRecipientData.email, type: 'seen', timestamp: Date.now()})
+    }, [props.roomsMessages,props.selectedRoom_id])
+
     return (
         <React.Fragment>
         <div className={"room"} style={{transform: `translate(${x}%,0px)`, gridTemplateRows: `55px auto ${inputHeight}`}}>
@@ -83,21 +97,18 @@ export default function Room(props) {
                 <div className="picContainer">
                     <ProfilePic />
                 </div>
-                <div className={"name"}>{props.selectedRoomRecipientName}</div>
+                <div className={"name"}>{props.selectedRoomRecipientData ? props.selectedRoomRecipientData.name : null}</div>
                 <div className="videoCall" ><i className="video-call" /></div>
                 <div className="audioCall" ><i className="call" /></div>
                 <div className="menu-room"><i className="vertical-menu" /></div>
             </div>
             <div ref={MesssagesRef} className={"messages"} style={{height: `calc(100vh - ${offSetForMSGHeight}px)`}}>
                 {
-                    props.selectedRoom_id ? props.roomsMessages[props.selectedRoom_id].map((obj, index) => {
+                    props.selectedRoom_id ? props.roomsMessages[props.selectedRoom_id].list.map((obj, index) => {
                         messageOwnerChanged = lastMSGFrom === obj.senderId ? false : true
                         lastMSGFrom = obj.senderId
                         return (
-                            <div key={index} className={['msgBox ', obj.senderId === props.userData._id ? 'sent' : obj.senderId === 'bot1' ? 'bot1' : 'received', messageOwnerChanged ? 'marginTop' : null].join(' ')}>
-                                <div>{ReactHtmlParser(obj.msg)}</div>
-                                <div>{formatTime(obj.timestamp)}</div>
-                            </div> 
+                            <MsgBox key={index} userData={props.userData} selectedRoom_id={props.selectedRoom_id} obj={obj} messageOwnerChanged={messageOwnerChanged} seen={props.roomsMessages[props.selectedRoom_id].seen}  received={props.roomsMessages[props.selectedRoom_id].received}  sent={props.roomsMessages[props.selectedRoom_id].sent}/>
                         )
                     }) : null
                 }
