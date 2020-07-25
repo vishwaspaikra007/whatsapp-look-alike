@@ -5,6 +5,7 @@ import ProfilePic from './ProfilePic'
 import formatTime from './formatTime'
 import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser'
 import BackgroundClickAnimation from './BackgroundClickAnimation'
+import MsgStatus from './MsgStatus'
 
 export default function ChatContainer(props) {
     const [tag, setTag] = useState(undefined)
@@ -24,7 +25,12 @@ export default function ChatContainer(props) {
                         <div className="date">{date}</div>
                     </div>
                     <div>
-                        <div className="lastMessage">{ReactHtmlParser(props.lastMessage)}</div>
+                        <div className="lastMessage">
+                            {
+                                props.userData._id == props.senderId ? <MsgStatus seen={props.seen} received={props.received} sent={props.sent} msgTimestamp={props.date}/> : null
+                            }
+                            <span style={{paddingLeft: "5px"}}>{props.lastMessage.replace(/<\/*div>/g," ")}</span>
+                        </div>
                         <div className="tag">{tag}</div>
                     </div>
                 </Link>

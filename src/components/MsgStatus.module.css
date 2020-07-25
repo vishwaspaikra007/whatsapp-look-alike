@@ -6,6 +6,7 @@
     transform: scale(1.5);
     background-size: contain;
     background-position: center;
+    display: inline-block;
 }
 .doubleBlueTick {
     background-image: url('../assets/doubleBlueTick.svg');

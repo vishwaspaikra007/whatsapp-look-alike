@@ -311,6 +311,9 @@ function App() {
     console.log(roomsMessages)
     setContacts(contacts.map(obj => {
       obj['lastMessageData'] = roomsMessages[obj._id].list[roomsMessages[obj._id].list.length - 1]
+      obj.seen = roomsMessages[obj._id].seen
+      obj.received = roomsMessages[obj._id].received
+      obj.sent = roomsMessages[obj._id].sent
       return obj
     }))
   }, [roomsMessages])
@@ -333,7 +336,7 @@ function App() {
 
         <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} accessJWTTokken={accessJWTTokken} />
 
-        <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} setselectedRoomRecipientData={selectedRoomRecipientData => setselectedRoomRecipientData(selectedRoomRecipientData)} setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} contacts={contacts} />
+        <Body shareRef={ref => setBodyRef(ref.current)} setchatsRefForBody={chatsRef => setchatsRefForBody(chatsRef.current)} scrolled={marginTop} setselectedRoomRecipientData={selectedRoomRecipientData => setselectedRoomRecipientData(selectedRoomRecipientData)} setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} contacts={contacts} userData={userData}/>
 
         {
           showMenu ? <MenuContainer openMenu={val => setMenu(val)} menuClass={menuClass} /> : null
