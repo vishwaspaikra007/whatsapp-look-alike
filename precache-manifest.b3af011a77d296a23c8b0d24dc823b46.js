@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "666324de47b61207d9588763970ba28a",
+    "revision": "bfbeb96712de6efcb33fa8744d614943",
     "url": "/whatsapp-look-alike/index.html"
   },
   {
-    "revision": "1bed35a4bc4e1dd67643",
-    "url": "/whatsapp-look-alike/static/css/main.83ed8b51.chunk.css"
+    "revision": "e2185e24025df66e7515",
+    "url": "/whatsapp-look-alike/static/css/main.7b03dd31.chunk.css"
   },
   {
-    "revision": "dad56052b64fe166e3e8",
-    "url": "/whatsapp-look-alike/static/js/2.bd9fa63b.chunk.js"
+    "revision": "d0faf790addead2cc489",
+    "url": "/whatsapp-look-alike/static/js/2.845056ad.chunk.js"
   },
   {
     "revision": "d3ff1a3b31b97563752a353cbeb5663f",
-    "url": "/whatsapp-look-alike/static/js/2.bd9fa63b.chunk.js.LICENSE.txt"
+    "url": "/whatsapp-look-alike/static/js/2.845056ad.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "1bed35a4bc4e1dd67643",
-    "url": "/whatsapp-look-alike/static/js/main.53b6290f.chunk.js"
+    "revision": "e2185e24025df66e7515",
+    "url": "/whatsapp-look-alike/static/js/main.91ac722c.chunk.js"
   },
   {
     "revision": "de73dd5e81ddfc0b99b0",
@@ -56,12 +56,24 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/whatsapp-look-alike/static/media/createChat.22024c00.svg"
   },
   {
+    "revision": "d1688fa5fee0895721f8bf1318e30cc0",
+    "url": "/whatsapp-look-alike/static/media/doubleBlueTick.d1688fa5.svg"
+  },
+  {
+    "revision": "68d1416aadb7b98fa7e67c01b05193c3",
+    "url": "/whatsapp-look-alike/static/media/doubleTick.68d1416a.svg"
+  },
+  {
     "revision": "36e41b998492db2d74479d955ab1216b",
     "url": "/whatsapp-look-alike/static/media/emoji.36e41b99.svg"
   },
   {
     "revision": "bbe7912941fb149d6e56f45cf0b16ed2",
     "url": "/whatsapp-look-alike/static/media/microphone.bbe79129.svg"
+  },
+  {
+    "revision": "a871525ae307a44c5397b005711d6cbc",
+    "url": "/whatsapp-look-alike/static/media/pending.a871525a.svg"
   },
   {
     "revision": "a8f61b5adaa2e8a08c87a1947fc5a295",
@@ -78,6 +90,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "09c7badf13cf7f5ca2912b388311741b",
     "url": "/whatsapp-look-alike/static/media/send.09c7badf.svg"
+  },
+  {
+    "revision": "df8364ba1c4898d9872bec960c81c534",
+    "url": "/whatsapp-look-alike/static/media/singleTick.df8364ba.svg"
   },
   {
     "revision": "e8af6707a73234c8cfb2fe075c927d55",
