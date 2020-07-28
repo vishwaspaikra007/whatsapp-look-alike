@@ -7,6 +7,9 @@ import socket from './socket.io-clientConfig'
 import Contacts from './Contacts'
 import BackgroundClickAnimation from './BackgroundClickAnimation'
 import config from './config'
+import WorkerEnabler from './WorkerEnabler'
+import WorkerCountUnSeenMSG from './WorkerCountUnSeenMSG'
+const countUnseenMSG = new WorkerEnabler(WorkerCountUnSeenMSG)
 
 export default function AvailableChats(props) {
 
@@ -19,7 +22,7 @@ export default function AvailableChats(props) {
     const getContactsAddress = config.production ? 'https://vishwas-auth.herokuapp.com/getContacts' : 'http://localhost:3000/getContacts'
 
     const sortAndSetArrayElement = (contact)=> {
-        setContacts(contacts.concat(contact).sort((obj1, obj2) => obj1.name < obj2.name))
+        setContacts(contacts.concat(contact).sort((obj1, obj2) => {return obj1.name.toUpperCase() < obj2.name.toUpperCase() ? 1 : -1}))
     }
 
     const saveContact = ()=> {
@@ -79,9 +82,10 @@ export default function AvailableChats(props) {
 
     useEffect(() => {
         axios.post(getContactsAddress).then(result => {
-            const {contacts, roomsMessages} = result.data
+            const {contacts, roomsMessages, userData} = result.data
+
             console.log("get contacts", result)
-            setContacts(contacts)
+            setContacts(contacts.sort((ob1, ob2) => {return ob1.name.toUpperCase() > ob2.name.toUpperCase() ? 1 : -1}))
 
             const modifiedRoomsMessages = {}
 
@@ -95,12 +99,14 @@ export default function AvailableChats(props) {
                 }
 
                 obj['lastMessageData'] = roomsMessages[obj._id][roomsMessages[obj._id].length - 1]
-
                 if(!obj.seen || obj.lastMessageData.timestamp > obj.seen)
                     socket.emit('msgStatusToServer',{roomId: obj._id, senderEmail: obj.email, type: 'received', timestamp: Date.now()})
 
                 return obj
             })
+
+            countUnseenMSG.postMessage({modifiedRoomsMessages, userData})
+
             console.log('modifiedContacts', modifiedContacts)
             // props.setMsgStatus(objectForMsgStatus)
             props.setContacts(modifiedContacts)
@@ -122,6 +128,16 @@ export default function AvailableChats(props) {
     const openChatRoom = ()=> {
 
     }
+
+    useEffect(() => {
+        countUnseenMSG.onmessage = e => {
+            console.log("from Worker : ", e.data)
+            props.setNewMSGCount(e.data)
+        }
+        return () => {
+            countUnseenMSG.removeListener('message')
+        }
+    }, [])
 
     return (
         <div className="room AvailableChats" style={style}>

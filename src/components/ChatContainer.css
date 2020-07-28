@@ -27,7 +27,7 @@
     grid-template-columns: auto 80px;
 }
 .ChatContainer > div > div:nth-child(2), .ChatContainer > a > div:nth-child(2){
-    grid-template-columns: auto 30px;
+    grid-template-columns: auto auto;
     border-bottom: 0.5px solid silver;
 }
 .ChatContainer:nth-last-child(2) > div > div{
@@ -57,4 +57,23 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+.tag {
+    display: flex;
+    justify-content: flex-end;
+}
+.newMSGColor {
+    color: #27c727;
+}
+.newMSG {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    padding-top: 2px;
+    margin-left: 5px;
+    text-align: center;
+    border-radius: 50%;
+    background: #27c727;
+    color: white;
+    font-size: 14px;
 }

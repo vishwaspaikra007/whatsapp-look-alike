@@ -30,7 +30,7 @@ function App() {
   const [registered, setRegistered] = useState(false)
   const [accessJWTTokken, setAccessJWTTokken] = useState(undefined)
   //to send open room chat data
-  const [selectedRoomRecipientData, setselectedRoomRecipientData] = useState(undefined)
+  const [selectedRoomRecipientData, setselectedRoomRecipientData] = useState({})
   const [selectedRoom_id, setSelectedRoom_id] = useState(undefined)
   const [userData, setUserData] = useState({})
   // open available chats
@@ -40,6 +40,7 @@ function App() {
   const [PWD, setPWD] = useState(undefined)
   const [contacts, setContacts] = useState([])
   const [roomsMessages, setRoomsMessages] = useState([])
+  const [newMSGCount, setNewMSGCount] = useState({})
 
   const openAvailableChatsRef = useRef(openAvailableChats)
   const selectedRoomRecipientDataRef = useRef(selectedRoomRecipientData)
@@ -48,7 +49,7 @@ function App() {
   const roomsMessagesRef = useRef()
   const contactsRef = useRef()
   const isURLSet = useRef(false)
-  
+  const newMSGCountRef = useRef(newMSGCount)
   const scrollTo = (i) => {
     bodyDRef.current.style.scrollSnapType = "none"
     let scrollAnime;
@@ -178,7 +179,7 @@ function App() {
 
   useEffect(() => {
     if (headerRef && bodyRef) {
-      if (selectedRoomRecipientData || openAvailableChats) {
+      if (selectedRoomRecipientData._id || openAvailableChats) {
         headerRef.style.transform = `translate(-100px,${marginTop}px)`
         bodyRef.style.transform = "translate(-100px,0px)"
       }
@@ -234,11 +235,11 @@ function App() {
   useEffect(() => {
     window.addEventListener('popstate', () => {
       console.log(window.location.pathname)
-      let a = !(openAvailableChatsRef.current || selectedRoomRecipientDataRef.current)
+      let a = !(openAvailableChatsRef.current || selectedRoomRecipientDataRef.current._id)
       if (window.location.pathname.match('whatsapp-look-alike/chats') && a) {
         scrollTo(0)
       }
-      setselectedRoomRecipientData(undefined)
+      setselectedRoomRecipientData({})
       setOpenAvailableChats(false)
     })
   }, [])
@@ -318,6 +319,32 @@ function App() {
     }))
   }, [roomsMessages])
 
+  useEffect(() => {
+    // console.log("new message", newMSGCount)
+    newMSGCountRef.current = newMSGCount
+    // console.log("new message", newMSGCountRef.current) 
+    setContacts(contacts.map(obj => {
+      if(selectedRoomRecipientData._id == obj.recipientId && obj.newMSGCount != 0) {
+        obj.newMSGCount = 0
+        const modifiedNewMsgCount = JSON.parse(JSON.stringify(newMSGCountRef.current))
+        modifiedNewMsgCount[obj._id] = 0
+        setNewMSGCount(modifiedNewMsgCount)
+      }
+      else 
+        obj.newMSGCount = newMSGCountRef.current[obj._id] 
+      return obj
+    }))
+  }, [newMSGCount])
+
+  useEffect(() => {
+    if(selectedRoom_id && Object.keys(newMSGCountRef.current).length) {
+      let modifiedNewMsgCount = JSON.parse(JSON.stringify(newMSGCountRef.current))
+      modifiedNewMsgCount[selectedRoom_id] = 0
+      console.log("new message", modifiedNewMsgCount)
+      setNewMSGCount(modifiedNewMsgCount)
+    }
+  }, [selectedRoom_id])
+
   return (
     <div className="App">
 
@@ -332,7 +359,7 @@ function App() {
 
       {registered && accessJWTTokken ? <React.Fragment>
 
-        <SocketConnections roomsMessagesRef={roomsMessagesRef} setRoomsMessages={roomsMessages => setRoomsMessages(roomsMessages)} email={email} contactsRef={contactsRef} setContacts={contacts => setContacts(contacts)} _id={userData._id}/>
+        <SocketConnections roomsMessagesRef={roomsMessagesRef} setRoomsMessages={roomsMessages => setRoomsMessages(roomsMessages)} email={email} contactsRef={contactsRef} setContacts={contacts => setContacts(contacts)} _id={userData._id} newMSGCountRef={newMSGCountRef} setNewMSGCount={newMSGCount => setNewMSGCount(newMSGCount)}/>
 
         <Header setHeaderRefInApp={ref => setHeaderRef(ref.current)} scrollTo={scrollTo} marginLeft={marginLeft} openMenu={val => setMenu(val)} y={marginTop} accessJWTTokken={accessJWTTokken} />
 
@@ -344,12 +371,12 @@ function App() {
 
         <DirectAccess setOpenAvailableChats={bool => setOpenAvailableChats(bool)} />
 
-        <Room userData={userData} selectedRoomRecipientData={selectedRoomRecipientData} setselectedRoomRecipientData={selectedRoomRecipientData => setselectedRoomRecipientData(selectedRoomRecipientData)} selectedRoom_id={selectedRoom_id} setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} roomsMessages={roomsMessages} setRoomsMessages={roomsMessages => setRoomsMessages(roomsMessages)}/>
+        <Room userData={userData} selectedRoomRecipientData={selectedRoomRecipientData} setselectedRoomRecipientData={selectedRoomRecipientData => setselectedRoomRecipientData(selectedRoomRecipientData)} selectedRoom_id={selectedRoom_id} setSelectedRoom_id={selectedRoom_id => setSelectedRoom_id(selectedRoom_id)} roomsMessagesRef={roomsMessagesRef} setRoomsMessages={roomsMessages => setRoomsMessages(roomsMessages)}/>
 
         <AvailableChats openAvailableChats={openAvailableChats} setOpenAvailableChats={bool => setOpenAvailableChats(bool)} email={email} reAuthorizationCheckAndConfig={result => reAuthorizationCheckAndConfig(result)} setContacts={contacts => setContacts(contacts)} setRoomsMessages={rooms => setRoomsMessages(rooms)} setUserData={userData =>
-         setUserData(userData)} contacts={contacts} roomsMessages={roomsMessages}/>
+         setUserData(userData)} contacts={contacts} roomsMessages={roomsMessages} setNewMSGCount={newMSGCount => setNewMSGCount(newMSGCount)}/>
 
-        <Block blockStyle={(selectedRoomRecipientData || openAvailableChats) ? { zIndex: 2, opacity: 0.6 } : { zIndex: -2, opacity: 0 }} />
+        <Block blockStyle={(selectedRoomRecipientData._id || openAvailableChats) ? { zIndex: 2, opacity: 0.6 } : { zIndex: -2, opacity: 0 }} />
 
       </React.Fragment> : null
       }

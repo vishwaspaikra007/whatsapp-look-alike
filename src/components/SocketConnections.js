@@ -13,6 +13,12 @@ export default function SocketConnections(props) {
       newRoomsMessages[data.roomId].list.push(data.msgData)
       props.setRoomsMessages(newRoomsMessages)
       // alert('received')
+      const modifiedNewMsgCount = JSON.parse(JSON.stringify(props.newMSGCountRef.current))
+      console.log("modifiedNewMsgCount", modifiedNewMsgCount)
+      modifiedNewMsgCount[data.roomId]++ 
+
+      props.setNewMSGCount(modifiedNewMsgCount)
+      
       socket.emit('msgStatusToServer',{roomId: data.roomId, senderId: data.msgData.senderId, type: 'received', timestamp: Date.now()})
 
     })

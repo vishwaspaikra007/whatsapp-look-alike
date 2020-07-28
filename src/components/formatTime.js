@@ -12,11 +12,11 @@ const formatTime = (timestamp) => {
         return ('Yesterday')
     } else {
         let hrs = new Date(timestamp).getHours()
+        const amOrPm = hrs/12 < 1 ? 'am' : 'pm'
+        hrs = hrs%13 ? hrs%13 : 1 
         hrs = hrs / 10 >= 1 ? hrs : '0' + hrs
         let min = new Date(timestamp).getMinutes()
         min = min / 10 >= 1 ? min : '0' + min
-        const amOrPm = hrs/12 < 1 ? 'am' : 'pm'
-        hrs = hrs%12
         return (hrs + ':' + min + ' ' + amOrPm)
     }
 }

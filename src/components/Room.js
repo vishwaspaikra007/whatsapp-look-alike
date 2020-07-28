@@ -23,7 +23,7 @@ export default function Room(props) {
 
     useEffect(() => {
         console.log('props.selectedRoom_id', props.selectedRoom_id)
-        if(props.selectedRoomRecipientData)
+        if(props.selectedRoomRecipientData._id)
         {    
             setX(0)
             setCreateX(0)
@@ -37,7 +37,7 @@ export default function Room(props) {
 
     const goBack =()=> {
         props.setSelectedRoom_id(undefined)
-        props.setselectedRoomRecipientData(undefined)
+        props.setselectedRoomRecipientData({})
         window.history.back()
     }
 
@@ -59,7 +59,7 @@ export default function Room(props) {
                 receiverEmail: props.selectedRoomRecipientData.email,
                 senderEmail: props.userData.email
             })
-            let roomsMessages = JSON.parse(JSON.stringify(props.roomsMessages))
+            let roomsMessages = JSON.parse(JSON.stringify(props.roomsMessagesRef.current))
             roomsMessages[props.selectedRoom_id].list.push(msgData)
             console.log('roomsMessages', roomsMessages)
             props.setRoomsMessages(roomsMessages)
@@ -72,7 +72,7 @@ export default function Room(props) {
 
     useEffect(() => {
         lastMSGIntoView()
-    }, [props.roomsMessages,x,offSetForMSGHeight])
+    }, [props.roomsMessagesRef.current,x,offSetForMSGHeight])
 
     const handleChange = e => {
         msgValueRef.current = e.target.value
@@ -82,11 +82,11 @@ export default function Room(props) {
     }
 
     useEffect(() => {
-        if(props.selectedRoom_id)
-        console.log("from room",props.roomsMessages[props.selectedRoom_id].list.slice(-1)[0].senderId)
-        if(props.selectedRoom_id && props.roomsMessages[props.selectedRoom_id].list.slice(-1)[0].senderId != props.userData._id)
-            socket.emit('msgStatusToServer',{roomId: props.selectedRoom_id, senderEmail: props.selectedRoomRecipientData.email, type: 'seen', timestamp: Date.now()})
-    }, [props.roomsMessages,props.selectedRoom_id])
+        if(props.selectedRoom_id && props.selectedRoomRecipientData.email)
+        console.log("from room",props.roomsMessagesRef.current[props.selectedRoom_id].list.slice(-1)[0].senderId)
+        if(props.selectedRoom_id && props.roomsMessagesRef.current[props.selectedRoom_id].list.slice(-1)[0].senderId != props.userData._id && props.selectedRoomRecipientData.email)
+            socket.emit('msgStatusToServer',{roomId: props.selectedRoom_id, senderEmail: props.selectedRoomRecipientData.email, type: 'seen', timestamp: Date.now(), receiverId: props.userData._id})
+    }, [props.roomsMessagesRef.current,props.selectedRoom_id,props.selectedRoomRecipientData])
 
     return (
         <React.Fragment>
@@ -97,18 +97,18 @@ export default function Room(props) {
                 <div className="picContainer">
                     <ProfilePic />
                 </div>
-                <div className={"name"}>{props.selectedRoomRecipientData ? props.selectedRoomRecipientData.name : null}</div>
+                <div className={"name"}>{props.selectedRoomRecipientData._id ? props.selectedRoomRecipientData.name : null}</div>
                 <div className="videoCall" ><i className="video-call" /></div>
                 <div className="audioCall" ><i className="call" /></div>
                 <div className="menu-room"><i className="vertical-menu" /></div>
             </div>
             <div ref={MesssagesRef} className={"messages"} style={{height: `calc(100vh - ${offSetForMSGHeight}px)`}}>
                 {
-                    props.selectedRoom_id ? props.roomsMessages[props.selectedRoom_id].list.map((obj, index) => {
+                    props.selectedRoom_id ? props.roomsMessagesRef.current[props.selectedRoom_id].list.map((obj, index) => {
                         messageOwnerChanged = lastMSGFrom === obj.senderId ? false : true
                         lastMSGFrom = obj.senderId
                         return (
-                            <MsgBox key={index} userData={props.userData} selectedRoom_id={props.selectedRoom_id} obj={obj} messageOwnerChanged={messageOwnerChanged} seen={props.roomsMessages[props.selectedRoom_id].seen}  received={props.roomsMessages[props.selectedRoom_id].received}  sent={props.roomsMessages[props.selectedRoom_id].sent}/>
+                            <MsgBox key={index} userData={props.userData} selectedRoom_id={props.selectedRoom_id} obj={obj} messageOwnerChanged={messageOwnerChanged} seen={props.roomsMessagesRef.current[props.selectedRoom_id].seen}  received={props.roomsMessagesRef.current[props.selectedRoom_id].received}  sent={props.roomsMessagesRef.current[props.selectedRoom_id].sent}/>
                         )
                     }) : null
                 }
