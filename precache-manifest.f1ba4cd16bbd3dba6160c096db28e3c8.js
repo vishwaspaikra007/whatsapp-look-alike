@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "bfbeb96712de6efcb33fa8744d614943",
+    "revision": "2b1b95117e7dda46db4f9365389e10d0",
     "url": "/whatsapp-look-alike/index.html"
   },
   {
-    "revision": "e2185e24025df66e7515",
-    "url": "/whatsapp-look-alike/static/css/main.7b03dd31.chunk.css"
+    "revision": "d9c1c3d35f6956e2d288",
+    "url": "/whatsapp-look-alike/static/css/main.be3faae5.chunk.css"
   },
   {
-    "revision": "d0faf790addead2cc489",
-    "url": "/whatsapp-look-alike/static/js/2.845056ad.chunk.js"
+    "revision": "aab4cd3af055532d756a",
+    "url": "/whatsapp-look-alike/static/js/2.15cd7bde.chunk.js"
   },
   {
     "revision": "d3ff1a3b31b97563752a353cbeb5663f",
-    "url": "/whatsapp-look-alike/static/js/2.845056ad.chunk.js.LICENSE.txt"
+    "url": "/whatsapp-look-alike/static/js/2.15cd7bde.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "e2185e24025df66e7515",
-    "url": "/whatsapp-look-alike/static/js/main.91ac722c.chunk.js"
+    "revision": "d9c1c3d35f6956e2d288",
+    "url": "/whatsapp-look-alike/static/js/main.40aeb09a.chunk.js"
   },
   {
     "revision": "de73dd5e81ddfc0b99b0",
