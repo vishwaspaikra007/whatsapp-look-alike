@@ -1,0 +1,100 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}.header {
+    width: 100%;
+    height: 110px;
+    background-color: #075e54;
+    color: white;
+    display: grid;
+    grid-template-rows: 60px 50px;
+    text-align: center;
+    line-height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+    box-shadow: 0 0 14px -6px black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    transition: transform 300ms ease-in-out;
+}
+.menu {
+    display: grid;
+    grid-template-columns: 76% 12% 12%;
+    overflow: hidden;
+    text-align: left;
+    line-height: 60px;
+}
+.options {
+    display: grid;
+    grid-template-columns: 10% 30% 30% 30%;
+    font-size: 15px;
+} 
+/* .options > div::after {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    background-color: #ffffff73;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    margin-left: 0%;
+    border-radius: 0;
+    transition: all 100ms ease-in-out, opacity 700ms ease-in-out, background-color 400ms ease-in-out;
+    transition-timing-function: ease-out;
+} */
+.options > div {
+    transition: 100ms;
+    position: relative;
+    z-index: 0;
+}
+/* .options > div:active::after {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.103);
+    transition: 0ms;
+    margin-left: 15%;
+    border-radius:  40%;
+    width: 70%;
+} */
+.brandName {
+    font-size: 21px;
+    text-indent: 15px;
+} .menu i {
+    margin: 24px 5px 24px auto;
+    height: 22px;
+}
+i {
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 30px;
+    margin: auto;
+    margin-top: 10px;
+    height: 25px;
+    display: block;
+}
+.icon-search {
+    background-image: url('../assets/search.svg');
+
+}
+.vertical-menu {
+    background-image: url('../assets/vertical-menu.svg');
+}
+.icon-camera {
+    background-image: url('../assets/camera.svg');
+}
+.indicator {
+    content: "";
+    width: 30%;
+    height: 3px;
+    background-color: white;
+    display: block;
+    margin-left: 10%;
+    position: absolute;
+    bottom: 0px;
+}

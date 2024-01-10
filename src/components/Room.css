@@ -1,0 +1,184 @@
+.room {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-left: 0;
+    background-color: #e5ddd5;
+    display: grid;
+    grid-template-rows: 55px auto 60px;
+    transition: transform 300ms ease-in-out;
+    z-index: 5;
+}
+.background-image {
+    background-image: url("../assets/bg-chat-tile.png");
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.06;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+.roomHeader {
+    width: 100vw;
+    height: 55px;
+    background-color: #075e54;
+    position: relative;
+}
+.picContainer {
+    height: 55px;
+    width: 50px;
+    padding: 8px;
+}
+.picContainer > div {
+    width: 100%;
+    height: 100%;
+}
+.roomHeader {
+    display: grid;
+    grid-template-columns: 25px 50px auto 50px 50px 40px;
+}
+.roomHeader > .name {
+    text-align: left;
+    padding-top: 17.5px;
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+}
+.return {
+    background-image: url('../assets/return.svg');
+}
+.back {
+    padding-top: 9.5px;
+    padding-left: 5px;
+    position: relative;
+    z-index: 2;
+}
+.roomHeader > div > .return {
+    height: 17.5px;
+}
+.videoCall, .audioCall, .menu-room  {
+    padding-top: 7.5px;
+}
+.video-call {
+    background-image: url('../assets/video-call.svg');
+}
+.call {
+    background-image: url('../assets/call.svg');
+    transform: rotate(-90deg);
+}
+.roomHeader > div > i {
+    height: 22.5px;
+    position: absolute;
+}
+.create {
+    display: grid;
+    grid-template-columns: calc(100vw - 55px) 55px;
+    width: 100vw;
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    z-index: 6;
+    transition: transform 300ms ease-in-out;
+}
+.create > .chatInput {
+    display: grid;
+    grid-template-columns: 40px calc(100vw - 195px) 40px 40px;
+    min-height: 45px;
+    max-height: 120px;
+    overflow: hidden;
+    margin: auto;
+    width: calc(100% - 5px);
+    border-radius: 22px;
+    padding: 0 6px;
+    background-color: white;
+}
+.chatInput i {
+    position: absolute;
+    bottom: 10px;
+} 
+.chatInput > .input {
+    border: none;
+    outline: none;
+    font-size: 17px;
+    text-align: left;
+    padding: 13px 5px;
+    overflow-y: auto;
+    min-height: 45px;
+    max-height: 120px;
+}
+.emoji > i {
+    background-image: url("../assets/emoji.svg");
+}
+.attachment {
+    transform: rotateX(180deg) rotateZ(-180deg);
+}
+.attachment > i {
+    background-image: url("../assets/attachment.svg");
+}
+.camera > i {
+    background-image: url("../assets/camera copy.svg");
+}
+.microphone, .send {
+    border-radius: 50%;
+    background: #328b7d;
+    width: 45px;
+    height: 45px;
+    margin: auto;
+    padding-top: 2px;
+    position: absolute;
+    left: calc(100vw - 50px);
+    bottom: 0px;
+}
+.microphone > i {
+    background-image: url("../assets/microphone.svg");
+    height: 20px;
+
+}
+.send > i {
+    background-image: url('../assets/send.svg');
+    height: 22px;
+}
+.msgBox, .sent {
+    max-width: 80%;
+    text-align: left;
+    padding: 10px;
+    margin: 2px auto;
+    margin-right: 10px;
+    background: #dcf6c5;
+    border-radius: 10px;
+    width: fit-content;
+}
+.received {
+    background: white;
+    margin-right: auto;
+    margin-left: 10px;
+}
+.bot1 {
+    margin-right: auto;
+    margin-left: auto;
+    background: white;
+    transform: scale(0.6);   
+}
+.msgBox > div:nth-last-child(1) {
+    color: gray;
+    margin: auto;
+    margin-right: 0px;
+    width: fit-content;
+    font-size: 13px;
+    margin-top: 5px;
+}
+.msgBox > div:nth-last-child(1) > div {
+    display: inline-block;
+}
+.messages {
+    overflow: auto;
+}
+.messages > .marginTop {
+    margin-top: 5px;
+}
+/* .chatInput > div > i{
+    height: 20px;
+} */

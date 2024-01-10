@@ -1,0 +1,42 @@
+.EnterEmail {
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+    position: fixed;
+    z-index: 9;
+    top: 0;
+    left: 0;
+    padding: 20px;
+}
+.EnterEmail > h2 {
+    padding: 15px 0 25px 0;
+    color: #118a7c;
+}
+.EnterEmail input {
+    padding: 2px;
+    margin-top: 15px;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #118a7c;
+    display: block;
+    margin: 15px auto;
+}
+.EnterEmail > input[type=number] {
+    display: block;
+    margin: 20px auto;
+}
+.EnterEmail > input:disabled, .EnterEmail > button:disabled {
+    opacity: 0.6;
+    
+}
+.EnterEmail > button {
+    width: 70px;
+    display: block;
+    padding: 10px;
+    position: fixed;
+    bottom: 40px;
+    left: calc(50vw - 35px);
+    text-transform: uppercase;
+    font-weight: 700;
+}

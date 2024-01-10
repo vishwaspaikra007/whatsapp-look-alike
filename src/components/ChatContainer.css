@@ -1,0 +1,79 @@
+.ChatContainer {
+    height: 80px;
+    display: grid;
+    grid-template-columns: 80px auto;
+    position: relative;
+}
+.ChatContainer > div, .ChatContainer > a {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    text-decoration: none;
+    color: inherit;
+}
+.ChatContainer > div:nth-child(1) {
+    display: block;
+}
+.ChatContainer > div > div, .ChatContainer > a > div{
+    display: grid;
+    text-align: left;
+    overflow: hidden;
+    margin-right: 10px;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.ChatContainer > div > div:nth-child(1), .ChatContainer > a > div:nth-child(1){
+    grid-template-columns: auto 80px;
+}
+.ChatContainer > div > div:nth-child(2), .ChatContainer > a > div:nth-child(2){
+    grid-template-columns: auto auto;
+    border-bottom: 0.5px solid silver;
+}
+.ChatContainer:nth-last-child(2) > div > div{
+    border-bottom: none;
+}
+.date{
+    font-size: 12px;
+    color: gray;
+    padding-top: 23.5px;
+    text-align: end;
+}
+.name {
+    padding-top: 20px;
+    font-weight: 500;
+    font-size: 17px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.lastMessage {
+    color: gray;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.lastMessage > div {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.tag {
+    display: flex;
+    justify-content: flex-end;
+}
+.newMSGColor {
+    color: #27c727;
+}
+.newMSG {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    padding-top: 2px;
+    margin-left: 5px;
+    text-align: center;
+    border-radius: 50%;
+    background: #27c727;
+    color: white;
+    font-size: 14px;
+}

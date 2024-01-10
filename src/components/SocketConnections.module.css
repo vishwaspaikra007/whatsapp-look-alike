@@ -1,0 +1,19 @@
+.socketMSG {
+    background-color: green;
+    color: white;
+    font-size: 10px;
+    width: 100%;
+    height: 12px;
+    padding: 1px;
+    text-align: center;
+    position: fixed;
+    bottom: -12px;
+    z-index: 10;
+    animation: socketMSG 2s 1s;
+}
+@keyframes socketMSG {
+    0% {bottom: -12px}
+    10% {bottom: 0px}
+    90% {bottom: 0px}
+    100% {bottom: -12px}
+}

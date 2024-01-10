@@ -1,0 +1,23 @@
+.doubleBlueTick, .doubleTick, .singleTick, .pending
+    {
+    width: 14px;
+    height: 14px;
+    margin: 0 0 0 5px;
+    transform: scale(1.5);
+    background-size: contain;
+    background-position: center;
+    display: inline-block;
+}
+.doubleBlueTick {
+    background-image: url('../assets/doubleBlueTick.svg');
+}
+.doubleTick {
+    background-image: url('../assets/doubleTick.svg');
+}
+.singleTick {
+    background-image: url('../assets/singleTick.svg');
+}
+.pending {
+    background-image: url('../assets/pending.svg');
+    margin: 0 0 -2px 5px;
+}

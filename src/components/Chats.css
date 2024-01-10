@@ -1,0 +1,15 @@
+.chatsContainer {   
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    overflow-y: auto;
+    transition: height 400ms;
+    height: calc(100vh - 50px);
+    padding-top: 60px;
+}
+.chatsContainer > div:nth-last-child(1) {
+    height: 130px;
+    color: #777676;
+    padding-top: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}

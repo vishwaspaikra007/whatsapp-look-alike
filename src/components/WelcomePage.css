@@ -1,0 +1,69 @@
+.WelcomePage {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    display: grid;
+    grid-template-rows: 100px auto 50px 50px 130px;
+    z-index: 10;
+    background-color: white;
+    top: 0;
+    left: 0;
+    color: silver;
+}
+.WelcomePage > h1 {
+    padding-top: 70px;
+    color: #118a7c;
+    font-size: 8vmin;
+    height: min-content;
+}
+.WelcomePage > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.WelcomePage > div > span {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-image: url('../assets/WelcomeBg.jpg');
+    display: block;
+    background-size: 150%;
+    background-position: center;
+}
+.WelcomePage > p > span {
+    color: #31aed1;
+}
+footer {
+    padding-top: 65px;
+    color: silver;
+}
+footer > span {
+    display: block;
+    color: #01d101;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding-top: 7px;
+    font-weight: bold;
+}
+.WelcomePage > button {
+    max-width: 50vh;
+}
+@media only screen and (max-height: 600px) {
+    .WelcomePage {
+        grid-template-rows: 30px auto 50px 50px 130px;
+    }
+    .WelcomePage > h1 {
+        padding-top: 10px;
+    }
+    .WelcomePage > div > span {
+        width: 100px;
+        height: 100px;
+    }
+    footer {
+        padding-top: 10px;
+    } 
+    .WelcomePage > button {
+        transform: scale(0.8);
+    }
+}

@@ -1,0 +1,10 @@
+.body {
+    width: 100%;
+    height: calc(100vh - 50px);
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    display: grid;
+    grid-template-columns: 100% 100% 100%;
+    margin-top: 50px;
+    transition: transform 300ms ease-in-out;
+}

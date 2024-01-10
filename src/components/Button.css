@@ -1,0 +1,16 @@
+button {
+    border: none;
+    width: 75%;
+    margin: auto;
+    padding: 13px;
+    border-radius: 3px;
+    color: white;
+    font-weight: 500;
+    outline: none;
+    background: linear-gradient(170deg, #01d101, #03a303);
+    box-shadow: 2px 2px 12px -6px black, -3px -3px 12px -6px #01d101;
+}
+button:active {
+    transform: scale(0.99);
+    box-shadow: 1px 1px 10px -6px black, -1px -1px 10px -6px #01d101;
+}
